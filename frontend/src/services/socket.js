@@ -10,9 +10,27 @@ class SocketService {
   connect() {
     if (this.connected) return this.socket;
 
-    this.socket = io(import.meta.env.VITE_API_URL || "http://localhost:4000", {
-      transports: ["websocket", "polling"],
+    // Handle URL: Ensure we connect to base URL (port 4000) not /api
+    let rawUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
+    let socketUrl = rawUrl;
+    
+    // If URL contains /api, strip it to get base root
+    try {
+      const urlObj = new URL(rawUrl);
+      socketUrl = `${urlObj.protocol}//${urlObj.host}`;
+    } catch (e) {
+      console.error("Invalid Socket URL:", rawUrl);
+    }
+
+    console.log("Connecting to Socket.io at:", socketUrl);
+
+    this.socket = io(socketUrl, {
+      transports: ["polling", "websocket"], // Try polling first (more robust), then upgrade
       withCredentials: true,
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
     });
 
     this.socket.on("connect", () => {
