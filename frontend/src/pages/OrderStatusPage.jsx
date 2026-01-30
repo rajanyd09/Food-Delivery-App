@@ -220,10 +220,10 @@ const OrderStatusPage = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-gray-800">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ₹{(item.price * item.quantity).toFixed(2)}
                       </p>
                       <p className="text-sm text-gray-600">
-                        ${item.price.toFixed(2)} each
+                        ₹{item.price.toFixed(2)} each
                       </p>
                     </div>
                   </div>
@@ -233,19 +233,19 @@ const OrderStatusPage = () => {
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-700">Subtotal</span>
                     <span className="font-medium">
-                      ${order.subtotal?.toFixed(2) || '0.00'}
+                      ₹{order.subtotal?.toFixed(2) || '0.00'}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-700">Delivery Fee</span>
                     <span className="font-medium">
-                      ${order.deliveryFee?.toFixed(2) || '0.00'}
+                      ₹{order.deliveryFee?.toFixed(2) || '0.00'}
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-lg font-bold">
                     <span className="text-gray-900">Total</span>
                     <span className="text-green-600">
-                      ${order.totalAmount?.toFixed(2) || '0.00'}
+                      ₹{order.totalAmount?.toFixed(2) || '0.00'}
                     </span>
                   </div>
                 </div>

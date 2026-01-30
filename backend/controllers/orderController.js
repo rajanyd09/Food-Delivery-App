@@ -111,7 +111,7 @@ exports.createOrder = async (req, res) => {
         name: customer.name.trim(),
         address: customer.address.trim(),
         phone: customer.phone.trim(),
-        email: customer.email || "guest@example.com",
+        email: customer.email || "N/A",
       },
       items: orderItems,
       subtotal: calculatedSubtotal,

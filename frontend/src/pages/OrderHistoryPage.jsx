@@ -176,7 +176,7 @@ const OrderHistoryPage = () => {
                         </div>
                       </div>
                       <div className="text-xl font-bold text-green-600">
-                        ${order.totalAmount?.toFixed(2) || "0.00"}
+                        ₹{order.totalAmount?.toFixed(2) || "0.00"}
                       </div>
                     </div>
                   </div>
@@ -225,7 +225,7 @@ const OrderHistoryPage = () => {
                               </span>
                             </div>
                             <span className="font-medium">
-                              $
+                              ₹
                               {item.price && item.quantity
                                 ? (item.price * item.quantity).toFixed(2)
                                 : (item.itemTotal || 0).toFixed(2)}

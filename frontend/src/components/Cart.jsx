@@ -70,7 +70,7 @@ const Cart = ({
           <div className="text-right">
             <p className="text-xs text-gray-500 font-medium">Total</p>
             <p className="text-2xl font-bold text-blue-600">
-              ${total.toFixed(2)}
+              ₹{total.toFixed(2)}
             </p>
           </div>
         </div>
@@ -127,7 +127,7 @@ const Cart = ({
                       {menuItem.name}
                     </h3>
                     <p className="text-sm text-gray-600 mb-2">
-                      ${itemPrice.toFixed(2)} each
+                      ₹{itemPrice.toFixed(2)} each
                     </p>
                     {menuItem.description && (
                       <p className="text-xs text-gray-500 line-clamp-2">
@@ -170,7 +170,7 @@ const Cart = ({
 
                   <div className="flex items-center gap-3 ml-auto sm:ml-0">
                     <p className="text-lg font-bold text-gray-900">
-                      ${itemTotal.toFixed(2)}
+                      ₹{itemTotal.toFixed(2)}
                     </p>
                     <button
                       onClick={() => onRemoveItem(cartItem.menuItemId)}
@@ -194,17 +194,17 @@ const Cart = ({
           <div className="p-5 space-y-3">
             <div className="flex justify-between items-center text-sm">
               <span className="text-gray-600 font-medium">Subtotal</span>
-              <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
+              <span className="font-semibold text-gray-900">₹{subtotal.toFixed(2)}</span>
             </div>
             
             <div className="flex justify-between items-center text-sm">
               <span className="text-gray-600 font-medium">Delivery Fee</span>
-              <span className="font-semibold text-gray-900">${deliveryFee.toFixed(2)}</span>
+              <span className="font-semibold text-gray-900">₹{deliveryFee.toFixed(2)}</span>
             </div>
             
             <div className="flex justify-between items-center text-sm">
               <span className="text-gray-600 font-medium">Tax (8%)</span>
-              <span className="font-semibold text-gray-900">${tax.toFixed(2)}</span>
+              <span className="font-semibold text-gray-900">₹{tax.toFixed(2)}</span>
             </div>
             
             <div className="pt-3 border-t-2 border-dashed border-gray-300"></div>
@@ -212,7 +212,7 @@ const Cart = ({
             <div className="flex justify-between items-center pt-1">
               <span className="text-base font-bold text-gray-900">Total Amount</span>
               <span className="text-2xl font-extrabold text-blue-600">
-                ${total.toFixed(2)}
+                ₹{total.toFixed(2)}
               </span>
             </div>
           </div>
@@ -226,7 +226,7 @@ const Cart = ({
         >
           <span>Proceed to Checkout</span>
           <div className="bg-white/20 px-3 py-1 rounded-lg text-sm font-bold group-hover:bg-white/30 transition-colors">
-            ${total.toFixed(2)}
+            ₹{total.toFixed(2)}
           </div>
         </button>
         

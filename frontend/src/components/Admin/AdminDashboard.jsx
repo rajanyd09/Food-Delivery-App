@@ -126,7 +126,7 @@ const AdminDashboard = () => {
                 <div className="flex items-center space-x-2">
                   <div className="w-9 h-9 flex items-center justify-center">
                     <img 
-                      src="/scooter_2304848.png" 
+                      src="/food-delivery_2947553.png" 
                       alt="Admin Logo" 
                       className="w-full h-full object-contain"
                     />

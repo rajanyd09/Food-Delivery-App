@@ -38,7 +38,7 @@ describe("MenuItemCard", () => {
     );
 
     expect(screen.getByText("Test Pizza")).toBeDefined();
-    expect(screen.getByText("$12.99")).toBeDefined();
+    expect(screen.getByText("₹12.99")).toBeDefined();
     expect(screen.getByText("Delicious test pizza")).toBeDefined();
   });
 

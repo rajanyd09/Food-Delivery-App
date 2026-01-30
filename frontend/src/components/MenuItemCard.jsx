@@ -13,7 +13,7 @@ const MenuItemCard = ({ item, quantity = 0, onAdd, onRemove }) => {
         />
         <div className="absolute top-3 right-3">
           <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-green-600 shadow-lg">
-            ${item.price.toFixed(2)}
+            ₹{item.price.toFixed(2)}
           </span>
         </div>
         {/* Category Badge */}

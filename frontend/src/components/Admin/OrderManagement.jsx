@@ -490,8 +490,8 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       ${item.specialInstructions ? `<div style="font-size: 11px; color: #718096;">Note: ${item.specialInstructions}</div>` : ""}
                     </td>
                     <td>${item.quantity}</td>
-                    <td>$${item.price?.toFixed(2)}</td>
-                    <td>$${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
+                    <td>₹${item.price?.toFixed(2)}</td>
+                    <td>₹${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</td>
                   </tr>
                 `,
                   )
@@ -504,18 +504,18 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
             <h3 style="margin-top: 0;">Order Summary</h3>
             <div class="summary-row">
               <span>Subtotal</span>
-              <span>$${order.subtotal?.toFixed(2) || "0.00"}</span>
+              <span>₹${order.subtotal?.toFixed(2) || "0.00"}</span>
             </div>
             <div class="summary-row">
               <span>Delivery Fee</span>
-              <span>$${order.deliveryFee?.toFixed(2) || "0.00"}</span>
+              <span>₹${order.deliveryFee?.toFixed(2) || "0.00"}</span>
             </div>
             ${
               order.taxAmount > 0
                 ? `
               <div class="summary-row">
                 <span>Tax (${order.taxRate || "0"}%)</span>
-                <span>$${order.taxAmount?.toFixed(2) || "0.00"}</span>
+                <span>₹${order.taxAmount?.toFixed(2) || "0.00"}</span>
               </div>
             `
                 : ""
@@ -525,14 +525,14 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                 ? `
               <div class="summary-row">
                 <span>Discount</span>
-                <span>-$${order.discountAmount?.toFixed(2) || "0.00"}</span>
+                <span>-₹${order.discountAmount?.toFixed(2) || "0.00"}</span>
               </div>
             `
                 : ""
             }
             <div class="summary-row summary-total">
               <span>TOTAL</span>
-              <span>$${order.totalAmount?.toFixed(2)}</span>
+              <span>₹${order.totalAmount?.toFixed(2)}</span>
             </div>
           </div>
           
@@ -631,7 +631,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
   };
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="space-y-6 ">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
         <div>
@@ -1044,11 +1044,11 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-semibold text-gray-900">
-                        ${order.totalAmount?.toFixed(2)}
+                        ₹{order.totalAmount?.toFixed(2)}
                       </div>
                       {order.deliveryFee > 0 && (
                         <div className="text-xs text-gray-500">
-                          +${order.deliveryFee?.toFixed(2)} delivery
+                          +₹{order.deliveryFee?.toFixed(2)} delivery
                         </div>
                       )}
                     </td>
@@ -1364,10 +1364,10 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 text-gray-900">
-                                  ${item.price?.toFixed(2)}
+                                  ₹{item.price?.toFixed(2)}
                                 </td>
                                 <td className="px-6 py-4 font-semibold text-gray-900">
-                                  $
+                                  ₹
                                   {(
                                     (item.price || 0) * (item.quantity || 1)
                                   ).toFixed(2)}
@@ -1433,23 +1433,23 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       <div className="space-y-3">
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">Subtotal</span>
-                          <span>${selectedOrder.subtotal?.toFixed(2)}</span>
+                          <span>₹{selectedOrder.subtotal?.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">Delivery Fee</span>
-                          <span>${selectedOrder.deliveryFee?.toFixed(2)}</span>
+                          <span>₹{selectedOrder.deliveryFee?.toFixed(2)}</span>
                         </div>
                         {selectedOrder.taxAmount > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-gray-600">Tax</span>
-                            <span>${selectedOrder.taxAmount?.toFixed(2)}</span>
+                            <span>₹{selectedOrder.taxAmount?.toFixed(2)}</span>
                           </div>
                         )}
                         {selectedOrder.discountAmount > 0 && (
                           <div className="flex justify-between text-sm text-green-600">
                             <span>Discount</span>
                             <span>
-                              -${selectedOrder.discountAmount?.toFixed(2)}
+                              -₹{selectedOrder.discountAmount?.toFixed(2)}
                             </span>
                           </div>
                         )}
@@ -1457,7 +1457,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                           <div className="flex justify-between font-semibold text-lg">
                             <span>Total Amount</span>
                             <span className="text-blue-600">
-                              ${selectedOrder.totalAmount?.toFixed(2)}
+                              ₹{selectedOrder.totalAmount?.toFixed(2)}
                             </span>
                           </div>
                         </div>

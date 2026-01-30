@@ -85,7 +85,7 @@ describe("Cart", () => {
     // + 2.99 delivery fee
     // + 2.80 tax (8% of 34.97)
     // = 40.76
-    expect(screen.getAllByText("$40.76").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("₹40.76").length).toBeGreaterThan(0);
   });
 
   it("calls onUpdateQuantity when minus button is clicked", () => {

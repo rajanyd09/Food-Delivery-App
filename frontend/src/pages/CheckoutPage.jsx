@@ -11,6 +11,7 @@ import {
   FaUser,
   FaLock,
   FaExclamationTriangle,
+  FaEnvelope
 } from "react-icons/fa";
 
 const CheckoutPage = () => {
@@ -19,6 +20,7 @@ const CheckoutPage = () => {
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     address: "",
     phone: "",
     deliveryInstructions: "",
@@ -69,6 +71,7 @@ const CheckoutPage = () => {
           setFormData((prev) => ({
             ...prev,
             name: currentUser.name || "",
+            email: currentUser.email || "",
             phone: currentUser.phone || "",
             address: currentUser.address?.street || currentUser.address || "",
           }));
@@ -181,6 +184,7 @@ const CheckoutPage = () => {
         user: userId,
         customer: {
           name: formData.name.trim(),
+          email: formData.email.trim(),
           address: formData.address.trim(),
           phone: formData.phone.trim(),
         },
@@ -345,6 +349,25 @@ const CheckoutPage = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       <div className="flex items-center">
+                        <FaEnvelope className="w-4 h-4 text-gray-400 mr-2" />
+                        Email Address *
+                      </div>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none"
+                      placeholder="john@example.com"
+                      readOnly
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <div className="flex items-center">
                         <FaPhone className="w-4 h-4 text-gray-400 mr-2" />
                         Phone Number *
                       </div>
@@ -499,11 +522,11 @@ const CheckoutPage = () => {
                           Qty: {cartItem.quantity}
                         </p>
                         <p className="text-sm text-gray-500">
-                          ${(menuItem.price || 0).toFixed(2)} each
+                          ₹{(menuItem.price || 0).toFixed(2)} each
                         </p>
                       </div>
                       <div className="font-semibold text-gray-900">
-                        $
+                        ₹
                         {((menuItem.price || 0) * cartItem.quantity).toFixed(2)}
                       </div>
                     </div>
@@ -514,15 +537,15 @@ const CheckoutPage = () => {
               <div className="space-y-3 pt-4 border-t">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Delivery Fee</span>
-                  <span className="font-medium">${deliveryFee.toFixed(2)}</span>
+                  <span className="font-medium">₹{deliveryFee.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold pt-3 border-t">
                   <span>Total</span>
-                  <span className="text-green-600">${total.toFixed(2)}</span>
+                  <span className="text-green-600">₹{total.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -558,7 +581,7 @@ const CheckoutPage = () => {
                 ) : (
                   <>
                     <FaLock className="w-5 h-5 mr-2" />
-                    Place Order • ${total.toFixed(2)}
+                    Place Order • ₹{total.toFixed(2)}
                   </>
                 )}
               </button>

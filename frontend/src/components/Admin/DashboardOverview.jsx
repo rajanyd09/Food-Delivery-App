@@ -55,7 +55,7 @@ const DashboardOverview = ({ stats, recentOrders }) => {
     },
     {
       title: "Total Revenue",
-      value: `$${(stats.revenue?.totalRevenue || 0).toFixed(2)}`,
+      value: `₹${(stats.revenue?.totalRevenue || 0).toFixed(2)}`,
       icon: <FaDollarSign className="text-purple-600" size={20} />,
       gradient: "from-purple-500 to-purple-600",
       bgColor: "bg-purple-50",
@@ -79,7 +79,7 @@ const DashboardOverview = ({ stats, recentOrders }) => {
           <div className="hidden md:block text-right">
             <p className="text-sm opacity-90 mb-1">Total Revenue</p>
             <p className="text-3xl font-bold">
-              ${(stats.revenue?.totalRevenue || 0).toFixed(2)}
+              ₹{(stats.revenue?.totalRevenue || 0).toFixed(2)}
             </p>
           </div>
         </div>
@@ -158,7 +158,7 @@ const DashboardOverview = ({ stats, recentOrders }) => {
                       </div>
                     </td>
                     <td className="px-4 py-3 text-sm font-bold text-green-600">
-                      ${order.totalAmount?.toFixed(2)}
+                      ₹{order.totalAmount?.toFixed(2)}
                     </td>
                     <td className="px-4 py-3">
                       <span
@@ -198,7 +198,7 @@ const DashboardOverview = ({ stats, recentOrders }) => {
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm text-gray-600">Avg Order Value</span>
                 <span className="font-bold text-gray-900">
-                  ${(stats.revenue?.avgOrderValue || 0).toFixed(2)}
+                  ₹{(stats.revenue?.avgOrderValue || 0).toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">

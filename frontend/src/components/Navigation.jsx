@@ -39,7 +39,7 @@ const Navigation = ({ user }) => {
             >
               <div className="w-10 h-10 flex items-center justify-center">
                 <img 
-                  src="/scooter_2304848.png" 
+                  src="/food-delivery_2947553.png" 
                   alt="Logo" 
                   className="w-full h-full object-contain"
                 />
