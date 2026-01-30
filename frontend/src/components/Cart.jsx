@@ -110,7 +110,8 @@ const Cart = ({
                       onUpdateQuantity(cartItem.menuItemId, cartItem.quantity - 1);
                     }
                   }}
-                  className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                  disabled={cartItem.quantity <= 1}
+                  className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FaMinus className="w-3 h-3 text-gray-600" />
                 </button>

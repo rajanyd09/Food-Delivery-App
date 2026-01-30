@@ -2,11 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import Cart from "../components/Cart";
 
-// Mock react-icons
-vi.mock("react-icons/fa", () => ({
-  FaTrash: () => <button data-testid="trash-icon">🗑</button>,
-  FaShoppingCart: () => <div data-testid="cart-icon">🛒</div>,
-}));
+
 
 describe("Cart", () => {
   const mockMenuItems = [
@@ -136,8 +132,8 @@ describe("Cart", () => {
       />,
     );
 
-    const trashIcons = screen.getAllByTestId("trash-icon");
-    fireEvent.click(trashIcons[0]);
+    const trashButtons = screen.getAllByTitle("Remove item");
+    fireEvent.click(trashButtons[0]);
 
     expect(mockOnRemoveItem).toHaveBeenCalledWith("1");
   });

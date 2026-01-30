@@ -27,6 +27,11 @@ vi.mock("../services/socket", () => ({
     connect: vi.fn(),
     subscribeToOrder: vi.fn(),
     disconnect: vi.fn(),
+    socket: {
+      on: vi.fn(),
+      off: vi.fn(),
+      emit: vi.fn(),
+    },
   },
 }));
 
