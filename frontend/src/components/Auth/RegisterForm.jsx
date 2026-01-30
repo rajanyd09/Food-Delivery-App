@@ -219,7 +219,7 @@ const RegisterForm = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                Phone Number (Optional)
+                Phone Number 
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
