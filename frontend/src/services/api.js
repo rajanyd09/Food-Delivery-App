@@ -10,6 +10,7 @@ const getBaseUrl = () => {
 };
 
 const API_URL = getBaseUrl();
+console.log("🚀 Frontend is connecting to API at:", API_URL);
 
 // Create axios instance
 const api = axios.create({
