@@ -60,7 +60,7 @@ app.get("/api/health", (req, res) => {
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: "*", // Allow all origins for WebSocket as well during debugging
     methods: ["GET", "POST"],
     credentials: true,
   },
