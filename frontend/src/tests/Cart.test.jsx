@@ -1,8 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import Cart from "../components/Cart";
-
-
 
 describe("Cart", () => {
   const mockMenuItems = [
@@ -65,11 +63,11 @@ describe("Cart", () => {
       />,
     );
 
-    expect(screen.getByText("Your Cart")).toBeDefined();
-    expect(screen.getByText("Test Pizza")).toBeDefined();
-    expect(screen.getByText("Test Burger")).toBeDefined();
-    expect(screen.getByText("2")).toBeDefined();
-    expect(screen.getByText("1")).toBeDefined();
+    expect(screen.getByText(/Shopping Cart/)).toBeDefined();
+    expect(screen.getAllByText("Test Pizza").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Test Burger").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("2").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("1").length).toBeGreaterThan(0);
   });
 
   it("calculates and displays correct total", () => {
@@ -84,7 +82,10 @@ describe("Cart", () => {
     );
 
     // Total calculation: (12.99 * 2) + (8.99 * 1) = 34.97
-    expect(screen.getByText("$34.97")).toBeDefined();
+    // + 2.99 delivery fee
+    // + 2.80 tax (8% of 34.97)
+    // = 40.76
+    expect(screen.getAllByText("$40.76").length).toBeGreaterThan(0);
   });
 
   it("calls onUpdateQuantity when minus button is clicked", () => {
@@ -98,7 +99,7 @@ describe("Cart", () => {
       />,
     );
 
-    const minusButtons = screen.getAllByText("-");
+    const minusButtons = screen.getAllByRole("button", { name: /decrease quantity/i });
     fireEvent.click(minusButtons[0]);
 
     expect(mockOnUpdateQuantity).toHaveBeenCalledWith("1", 1);
@@ -115,7 +116,7 @@ describe("Cart", () => {
       />,
     );
 
-    const plusButtons = screen.getAllByText("+");
+    const plusButtons = screen.getAllByRole("button", { name: /increase quantity/i });
     fireEvent.click(plusButtons[0]);
 
     expect(mockOnUpdateQuantity).toHaveBeenCalledWith("1", 3);
@@ -132,7 +133,7 @@ describe("Cart", () => {
       />,
     );
 
-    const trashButtons = screen.getAllByTitle("Remove item");
+    const trashButtons = screen.getAllByTitle("Remove from cart");
     fireEvent.click(trashButtons[0]);
 
     expect(mockOnRemoveItem).toHaveBeenCalledWith("1");

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ADD THIS
+import { useNavigate } from "react-router-dom";
 import { menuService } from "../services/api";
 import MenuItemCard from "../components/MenuItemCard";
 import Cart from "../components/Cart";
 import toast from "react-hot-toast";
 
 const MenuPage = () => {
-  const navigate = useNavigate(); // ADD THIS
+  const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState([]);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -99,23 +99,31 @@ const MenuPage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading menu...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className=" bg-gray-50">
-      <main className="max-w-7xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="min-h-screen bg-gray-50">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        {/* Page Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Menu</h1>
+          <p className="text-gray-600">Choose your favorite dishes and add them to your cart</p>
+        </div>
+
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+          {/* Menu Items Section - Takes 2/3 of the space on large screens */}
           <div className="lg:col-span-2">
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">
-                Our Menu
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {menuItems.map((item) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+              {menuItems.length > 0 ? (
+                menuItems.map((item) => (
                   <MenuItemCard
                     key={item._id}
                     item={item}
@@ -131,11 +139,16 @@ const MenuPage = () => {
                       )
                     }
                   />
-                ))}
-              </div>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-gray-500 text-lg">No menu items available</p>
+                </div>
+              )}
             </div>
           </div>
 
+          {/* Cart Section - Takes 1/3 of the space on large screens, full width on mobile */}
           <div className="lg:col-span-1">
             <Cart
               cartItems={cart}

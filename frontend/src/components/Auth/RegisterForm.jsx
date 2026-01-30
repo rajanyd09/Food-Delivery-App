@@ -119,13 +119,30 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="px-8 py-10">
-          <div className="text-center mb-10">
-            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+    <div className="min-h-screen flex bg-white">
+      {/* Left Side - Hero Image (Hidden on Mobile) */}
+      <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
+        <img
+          src="/auth_hero.png"
+          alt="Delicious Food"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 flex flex-col justify-end p-12 text-white">
+          <h1 className="text-4xl font-bold mb-4">Join Our Community</h1>
+          <p className="text-lg text-gray-200 max-w-md">
+            Create an account to start ordering delicious food from the best
+            restaurants near you.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side - Register Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-white">
+        <div className="max-w-md w-full space-y-8">
+          <div className="text-center lg:text-left">
+            <div className="mx-auto lg:mx-0 w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
               <svg
-                className="w-8 h-8 text-green-600"
+                className="w-6 h-6 text-green-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -138,20 +155,22 @@ const RegisterForm = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
-            <p className="mt-2 text-gray-600">
-              Join our food delivery community
+            <h2 className="text-3xl font-bold text-gray-900 tracking-tight">
+              Create an account
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Start your food journey with us today.
             </p>
           </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                 Full Name
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaUser className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaUser className="h-4 w-4 text-gray-400" />
                 </div>
                 <input
                   id="name"
@@ -160,9 +179,9 @@ const RegisterForm = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className={`pl-10 block w-full px-3 py-3 border ${
-                    errors.name ? "border-red-300" : "border-gray-300"
-                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                  className={`block w-full pl-11 pr-4 py-3 bg-gray-50 border ${
+                    errors.name ? "border-red-300" : "border-gray-200"
+                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 sm:text-sm`}
                   placeholder="John Doe"
                 />
               </div>
@@ -172,12 +191,12 @@ const RegisterForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaEnvelope className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaEnvelope className="h-4 w-4 text-gray-400" />
                 </div>
                 <input
                   id="email"
@@ -187,9 +206,9 @@ const RegisterForm = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className={`pl-10 block w-full px-3 py-3 border ${
-                    errors.email ? "border-red-300" : "border-gray-300"
-                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                  className={`block w-full pl-11 pr-4 py-3 bg-gray-50 border ${
+                    errors.email ? "border-red-300" : "border-gray-200"
+                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 sm:text-sm`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -199,12 +218,12 @@ const RegisterForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                 Phone Number (Optional)
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaPhone className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaPhone className="h-4 w-4 text-gray-400" />
                 </div>
                 <input
                   id="phone"
@@ -212,9 +231,9 @@ const RegisterForm = () => {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`pl-10 block w-full px-3 py-3 border ${
-                    errors.phone ? "border-red-300" : "border-gray-300"
-                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                  className={`block w-full pl-11 pr-4 py-3 bg-gray-50 border ${
+                    errors.phone ? "border-red-300" : "border-gray-200"
+                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 sm:text-sm`}
                   placeholder="+1 (555) 123-4567"
                 />
               </div>
@@ -224,12 +243,12 @@ const RegisterForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaLock className="h-4 w-4 text-gray-400" />
                 </div>
                 <input
                   id="password"
@@ -238,20 +257,20 @@ const RegisterForm = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`pl-10 pr-10 block w-full px-3 py-3 border ${
-                    errors.password ? "border-red-300" : "border-gray-300"
-                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                  className={`block w-full pl-11 pr-11 py-3 bg-gray-50 border ${
+                    errors.password ? "border-red-300" : "border-gray-200"
+                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 sm:text-sm`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <FaEyeSlash className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                   ) : (
-                    <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <FaEye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
               </div>
@@ -261,12 +280,12 @@ const RegisterForm = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                 Confirm Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaLock className="h-4 w-4 text-gray-400" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -275,22 +294,22 @@ const RegisterForm = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className={`pl-10 pr-10 block w-full px-3 py-3 border ${
+                  className={`block w-full pl-11 pr-11 py-3 bg-gray-50 border ${
                     errors.confirmPassword
                       ? "border-red-300"
-                      : "border-gray-300"
-                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                      : "border-gray-200"
+                  } rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all duration-200 sm:text-sm`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                    <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <FaEyeSlash className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                   ) : (
-                    <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                    <FaEye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
               </div>
@@ -307,71 +326,67 @@ const RegisterForm = () => {
                 name="terms"
                 type="checkbox"
                 required
-                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded cursor-pointer"
               />
               <label
                 htmlFor="terms"
-                className="ml-2 block text-sm text-gray-700"
+                className="ml-2 block text-sm text-gray-600 cursor-pointer"
               >
                 I agree to the{" "}
-                <a href="#" className="text-green-600 hover:text-green-500">
+                <a href="#" className="font-medium text-green-600 hover:text-green-500">
                   Terms of Service
                 </a>{" "}
                 and{" "}
-                <a href="#" className="text-green-600 hover:text-green-500">
+                <a href="#" className="font-medium text-green-600 hover:text-green-500">
                   Privacy Policy
                 </a>
               </label>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-              >
-                {loading ? (
-                  <>
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Creating Account...
-                  </>
-                ) : (
-                  "Create Account"
-                )}
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-green-600/20 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 transition-all duration-200"
+            >
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Creating Account...
+                </>
+              ) : (
+                "Create Account"
+              )}
+            </button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-600">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="font-medium text-green-600 hover:text-green-500"
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
+          <p className="mt-8 text-center text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-semibold text-green-600 hover:text-green-500"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
       </div>
     </div>

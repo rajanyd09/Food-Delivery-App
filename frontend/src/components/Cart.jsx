@@ -25,18 +25,20 @@ const Cart = ({
   }, 0);
 
   const deliveryFee = 2.99;
-  const total = subtotal + deliveryFee;
+  const taxRate = 0.08; // 8% tax
+  const tax = subtotal * taxRate;
+  const total = subtotal + deliveryFee + tax;
 
   if (!validCartItems || validCartItems.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-10 sticky top-4">
         <div className="text-center">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FaShoppingCart className="text-4xl text-gray-400" />
+          <div className="w-24 h-24 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+            <FaShoppingCart className="text-5xl text-gray-300" />
           </div>
-          <p className="text-lg font-semibold text-gray-900 mb-1">Your cart is empty</p>
-          <p className="text-sm text-gray-500">
-            Add some delicious items to get started!
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h3>
+          <p className="text-sm text-gray-500 max-w-xs mx-auto">
+            Start adding delicious items from our menu to begin your order!
           </p>
         </div>
       </div>
@@ -50,29 +52,51 @@ const Cart = ({
     }) || [];
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="p-6 border-b border-gray-100">
-        <h2 className="text-2xl font-bold text-gray-900">Your Cart</h2>
-        <p className="text-sm text-gray-600 mt-0.5">{validCartItems.length} items</p>
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden flex flex-col sticky top-4 max-h-[calc(100vh-2rem)]">
+      {/* Header Section */}
+      <div className="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+              <FaShoppingCart className="text-white text-lg" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Shopping Cart</h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {validCartItems.length} {validCartItems.length === 1 ? 'item' : 'items'}
+              </p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-gray-500 font-medium">Total</p>
+            <p className="text-2xl font-bold text-blue-600">
+              ${total.toFixed(2)}
+            </p>
+          </div>
+        </div>
       </div>
 
+      {/* Warning Banner */}
       {invalidItems.length > 0 && (
-        <div className="mx-6 mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
-          <div className="flex items-start">
-            <FaExclamationTriangle className="text-yellow-500 mt-0.5 mr-3 flex-shrink-0" />
+        <div className="mx-6 mt-4 mb-2 p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl flex-shrink-0">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+              <FaExclamationTriangle className="text-white text-sm" />
+            </div>
             <div>
-              <p className="text-yellow-900 font-semibold text-sm">
-                Some items are no longer available
+              <p className="text-amber-900 font-semibold text-sm">
+                Item Availability Notice
               </p>
-              <p className="text-yellow-700 text-xs mt-0.5">
-                {invalidItems.length} item(s) have been removed from your cart
+              <p className="text-amber-700 text-xs mt-1">
+                {invalidItems.length} item{invalidItems.length > 1 ? 's' : ''} {invalidItems.length > 1 ? 'are' : 'is'} no longer available and {invalidItems.length > 1 ? 'have' : 'has'} been removed from your cart.
               </p>
             </div>
           </div>
         </div>
       )}
 
-      <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
+      {/* Cart Items Scroll Area */}
+      <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-4 space-y-3 min-h-0">
         {validCartItems.map((cartItem) => {
           const menuItem = getMenuItem(cartItem.menuItemId);
           if (!menuItem) return null;
@@ -82,94 +106,133 @@ const Cart = ({
 
           return (
             <div
-              key={cartItem.menuItemId || cartItem.id || Math.random()}
-              className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-gray-100"
+              key={cartItem.menuItemId}
+              className="group bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-300 overflow-hidden"
             >
-              {/* Item Image */}
-              {menuItem.image && (
-                <img
-                  src={menuItem.image}
-                  alt={menuItem.name}
-                  className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
-                />
-              )}
+              {/* Unified Card Layout (Works for Sidebar & Mobile) */}
+              <div className="p-4">
+                {/* Top Section: Image & Details */}
+                <div className="flex gap-4 mb-4">
+                  {menuItem.image && (
+                    <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 shadow-sm border border-gray-200">
+                      <img
+                        src={menuItem.image}
+                        alt={menuItem.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-gray-900 text-base mb-1">
+                      {menuItem.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-2">
+                      ${itemPrice.toFixed(2)} each
+                    </p>
+                    {menuItem.description && (
+                      <p className="text-xs text-gray-500 line-clamp-2">
+                        {menuItem.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
-              {/* Item Details */}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 truncate">
-                  {menuItem.name || "Unnamed Item"}
-                </h3>
-                <p className="text-sm text-gray-600">${itemPrice.toFixed(2)} each</p>
-              </div>
+                {/* Bottom Section: Controls */}
+                <div className="flex flex-wrap items-center justify-between gap-y-3 pt-3 border-t border-gray-100">
+                  <div className="inline-flex items-center bg-gray-50 border-2 border-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                    <button
+                      onClick={() => {
+                        if (cartItem.quantity > 1) {
+                          onUpdateQuantity(cartItem.menuItemId, cartItem.quantity - 1);
+                        }
+                      }}
+                      disabled={cartItem.quantity <= 1}
+                      className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 hover:text-blue-600 disabled:opacity-40 transition-all"
+                      aria-label="Decrease quantity"
+                    >
+                      <FaMinus className="w-3 h-3" />
+                    </button>
+                    <div className="w-10 h-9 flex items-center justify-center border-x-2 border-gray-200 bg-white">
+                      <span className="text-sm font-bold text-gray-900">
+                        {cartItem.quantity}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() =>
+                        onUpdateQuantity(cartItem.menuItemId, cartItem.quantity + 1)
+                      }
+                      className="w-9 h-9 flex items-center justify-center text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-all"
+                      aria-label="Increase quantity"
+                    >
+                      <FaPlus className="w-3 h-3" />
+                    </button>
+                  </div>
 
-              {/* Quantity Controls */}
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => {
-                    if (cartItem.quantity > 1) {
-                      onUpdateQuantity(cartItem.menuItemId, cartItem.quantity - 1);
-                    }
-                  }}
-                  disabled={cartItem.quantity <= 1}
-                  className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <FaMinus className="w-3 h-3 text-gray-600" />
-                </button>
-                <span className="text-sm font-bold text-gray-900 min-w-[2rem] text-center">
-                  {cartItem.quantity || 0}
-                </span>
-                <button
-                  onClick={() =>
-                    onUpdateQuantity(cartItem.menuItemId, cartItem.quantity + 1)
-                  }
-                  className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
-                >
-                  <FaPlus className="w-3 h-3 text-gray-600" />
-                </button>
-              </div>
-
-              {/* Item Total & Remove */}
-              <div className="flex items-center space-x-3">
-                <span className="font-bold text-gray-900 min-w-[4rem] text-right">
-                  ${itemTotal.toFixed(2)}
-                </span>
-                <button
-                  onClick={() => onRemoveItem(cartItem.menuItemId)}
-                  className="p-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
-                  title="Remove item"
-                >
-                  <FaTrash className="w-4 h-4" />
-                </button>
+                  <div className="flex items-center gap-3 ml-auto sm:ml-0">
+                    <p className="text-lg font-bold text-gray-900">
+                      ${itemTotal.toFixed(2)}
+                    </p>
+                    <button
+                      onClick={() => onRemoveItem(cartItem.menuItemId)}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                      title="Remove from cart"
+                    >
+                      <FaTrash className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Cart Summary */}
-      <div className="p-6 border-t border-gray-100 bg-gray-50">
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Subtotal</span>
-            <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Delivery Fee</span>
-            <span className="font-semibold text-gray-900">${deliveryFee.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-200">
-            <span className="text-gray-900">Total</span>
-            <span className="text-green-600">${total.toFixed(2)}</span>
+      {/* Cart Summary Footer */}
+      <div className="px-6 py-6 border-t-2 border-gray-200 bg-gradient-to-b from-gray-50 to-white flex-shrink-0">
+        {/* Summary Box */}
+        <div className="bg-white rounded-xl border-2 border-gray-200 shadow-sm mb-5">
+          <div className="p-5 space-y-3">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600 font-medium">Subtotal</span>
+              <span className="font-semibold text-gray-900">${subtotal.toFixed(2)}</span>
+            </div>
+            
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600 font-medium">Delivery Fee</span>
+              <span className="font-semibold text-gray-900">${deliveryFee.toFixed(2)}</span>
+            </div>
+            
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600 font-medium">Tax (8%)</span>
+              <span className="font-semibold text-gray-900">${tax.toFixed(2)}</span>
+            </div>
+            
+            <div className="pt-3 border-t-2 border-dashed border-gray-300"></div>
+            
+            <div className="flex justify-between items-center pt-1">
+              <span className="text-base font-bold text-gray-900">Total Amount</span>
+              <span className="text-2xl font-extrabold text-blue-600">
+                ${total.toFixed(2)}
+              </span>
+            </div>
           </div>
         </div>
 
+        {/* Checkout Button */}
         <button
           onClick={onCheckout}
           disabled={validCartItems.length === 0}
-          className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-700 text-white py-3.5 px-6 rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 font-semibold shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none flex justify-center items-center gap-3 group"
         >
-          Proceed to Checkout
+          <span>Proceed to Checkout</span>
+          <div className="bg-white/20 px-3 py-1 rounded-lg text-sm font-bold group-hover:bg-white/30 transition-colors">
+            ${total.toFixed(2)}
+          </div>
         </button>
+        
+        <p className="text-center text-xs text-gray-500 mt-3">
+          Secure checkout • Free returns within 30 days
+        </p>
       </div>
     </div>
   );

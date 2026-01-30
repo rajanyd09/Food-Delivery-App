@@ -200,7 +200,7 @@ const AdminDashboard = () => {
         {/* Main Content */}
         <div className="flex-1 overflow-auto">
           {/* Top Bar */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10 shadow-sm">
+          <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-40 shadow-sm">
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
