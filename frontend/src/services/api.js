@@ -1,6 +1,15 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const getBaseUrl = () => {
+  let url = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+  // Ensure it ends with /api
+  if (!url.endsWith("/api")) {
+    url = `${url}/api`;
+  }
+  return url;
+};
+
+const API_URL = getBaseUrl();
 
 // Create axios instance
 const api = axios.create({
