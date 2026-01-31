@@ -12,8 +12,8 @@ router.patch("/:id/status", orderController.updateOrderStatus);
 router.put("/:id/cancel", orderController.orderCancel);
 
 // ADMIN ROUTES - PROTECTED
-router.get("/admin/all", orderController.getAllAdminOrders);
-router.get("/admin/stats", orderController.getOrderStats);
-router.get("/admin/recent", orderController.getRecentOrders);
+router.get("/admin/all", adminAuth, orderController.getAllAdminOrders);
+router.get("/admin/stats", adminAuth, orderController.getOrderStats);
+router.get("/admin/recent", adminAuth, orderController.getRecentOrders);
 
 module.exports = router;

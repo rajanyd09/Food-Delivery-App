@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+
 const adminAuth = async (req, res, next) => {
   try {
     console.log(
@@ -11,10 +14,10 @@ const adminAuth = async (req, res, next) => {
       return res.status(401).json({ success: false, error: "No token" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
     console.log("✅ Token decoded:", decoded);
 
-    const user = await User.findById(decoded._id).select("-password");
+    const user = await User.findById(decoded.userId).select("-password");
     console.log("👤 User found:", user?.email, "Role:", user?.role);
 
     if (!user) {
@@ -34,3 +37,5 @@ const adminAuth = async (req, res, next) => {
     res.status(401).json({ success: false, error: "Token invalid" });
   }
 };
+
+module.exports = adminAuth;

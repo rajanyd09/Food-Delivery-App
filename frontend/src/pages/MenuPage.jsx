@@ -4,12 +4,24 @@ import { menuService } from "../services/api";
 import MenuItemCard from "../components/MenuItemCard";
 import Cart from "../components/Cart";
 import toast from "react-hot-toast";
+import { FaUtensils } from "react-icons/fa";
 
 const MenuPage = () => {
   const navigate = useNavigate();
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItems, setMenuItems] = useState(() => {
+    // Initialize from localStorage if available
+    const saved = localStorage.getItem("menuItems");
+    try {
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("all");
   const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!menuItems.length);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchMenuItems();
@@ -19,12 +31,30 @@ const MenuPage = () => {
     setCart(savedCart);
   }, []);
 
+  useEffect(() => {
+    if (activeCategory === "all") {
+      setFilteredItems(menuItems);
+    } else {
+      setFilteredItems(
+        menuItems.filter((item) => item.category === activeCategory),
+      );
+    }
+  }, [activeCategory, menuItems]);
+
   const fetchMenuItems = async () => {
+    setError(null);
+    // Only show full loading spinner if we have no items to show
+    if (menuItems.length === 0) {
+      setLoading(true);
+    }
+
     try {
       const response = await menuService.getAllMenuItems();
       setMenuItems(response.data);
     } catch (error) {
-      toast.error("Failed to load menu items");
+      console.error("Failed to fetch menu:", error);
+      toast.error("Could not load latest menu items");
+      setError("Failed to load menu. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -97,33 +127,77 @@ const MenuPage = () => {
     navigate("/checkout");
   };
 
+  // Get unique categories
+  const categories = ["all", ...new Set(menuItems.map((item) => item.category))];
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Loading menu...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-gray-900 mx-auto mb-6"></div>
+          <p className="text-gray-500 font-medium tracking-wide animate-pulse">
+            PREPARING MENU...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && menuItems.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <p className="text-red-600 text-lg mb-4">{error}</p>
+          <button
+            onClick={fetchMenuItems}
+            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Retry Connection
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+    <div className="min-h-screen bg-gray-50/50">
+      <main className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 ">
         {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Menu</h1>
-          <p className="text-gray-600">Choose your favorite dishes and add them to your cart</p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">
+              Our Menu
+            </h1>
+            <p className="text-gray-500 text-lg">
+              Curated dishes for your dining pleasure
+            </p>
+          </div>
+          
+          {/* Category Filter */}
+          <div className="flex overflow-x-auto pb-2 md:pb-0 gap-2 no-scrollbar w-full md:w-auto">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 whitespace-nowrap ${
+                  activeCategory === category
+                    ? "bg-gray-900 text-white shadow-lg shadow-gray-900/20 transform scale-105"
+                    : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                }`}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
-          {/* Menu Items Section - Takes 2/3 of the space on large screens */}
-          <div className="lg:col-span-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-              {menuItems.length > 0 ? (
-                menuItems.map((item) => (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Menu Items Section */}
+          <div className="lg:col-span-8 xl:col-span-9">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredItems.length > 0 ? (
+                filteredItems.map((item) => (
                   <MenuItemCard
                     key={item._id}
                     item={item}
@@ -141,15 +215,24 @@ const MenuPage = () => {
                   />
                 ))
               ) : (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-gray-500 text-lg">No menu items available</p>
+                <div className="col-span-full py-20 text-center bg-white rounded-2xl border border-dashed border-gray-300">
+                  <FaUtensils className="mx-auto h-12 w-12 text-gray-300 mb-4" />
+                  <p className="text-gray-500 text-lg">
+                    No items found in this category
+                  </p>
+                  <button 
+                    onClick={() => setActiveCategory("all")}
+                    className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    View all items
+                  </button>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Cart Section - Takes 1/3 of the space on large screens, full width on mobile */}
-          <div className="lg:col-span-1">
+          {/* Cart Section - Sticky Sidebar */}
+          <div className="lg:col-span-4 xl:col-span-3 lg:sticky lg:top-8">
             <Cart
               cartItems={cart}
               menuItems={menuItems}
