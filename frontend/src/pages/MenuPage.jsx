@@ -194,8 +194,8 @@ const MenuPage = () => {
         {/* Main Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Menu Items Section */}
-          <div className="lg:col-span-8 xl:col-span-9">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className={`${cart.length > 0 ? 'lg:col-span-8 xl:col-span-9' : 'lg:col-span-12'}`}>
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${cart.length > 0 ? 'xl:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4'} gap-6`}>
               {filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
                   <MenuItemCard
@@ -232,15 +232,17 @@ const MenuPage = () => {
           </div>
 
           {/* Cart Section - Sticky Sidebar */}
-          <div className="lg:col-span-4 xl:col-span-3 lg:sticky lg:top-8">
-            <Cart
-              cartItems={cart}
-              menuItems={menuItems}
-              onUpdateQuantity={updateQuantity}
-              onRemoveItem={removeFromCart}
-              onCheckout={handleCheckout}
-            />
-          </div>
+          {cart.length > 0 && (
+            <div className="lg:col-span-4 xl:col-span-3 lg:sticky lg:top-8 transition-all duration-300 ease-in-out">
+              <Cart
+                cartItems={cart}
+                menuItems={menuItems}
+                onUpdateQuantity={updateQuantity}
+                onRemoveItem={removeFromCart}
+                onCheckout={handleCheckout}
+              />
+            </div>
+          )}
         </div>
       </main>
     </div>
