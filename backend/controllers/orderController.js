@@ -127,6 +127,18 @@ exports.createOrder = async (req, res) => {
     const order = new Order(orderData);
     await order.save();
 
+    // Populate the order to send complete data via WebSocket
+    const populatedOrder = await Order.findById(order._id).populate(
+      "items.menuItem",
+      "name price image category"
+    );
+
+    // Get IO instance and emit event
+    const io = req.app.get("io");
+    if (io) {
+      io.to("admin").emit("newOrder", populatedOrder);
+    }
+
     // Return success response
     res.status(201).json({
       success: true,
@@ -298,6 +310,20 @@ exports.updateOrderStatus = async (req, res) => {
         success: false,
         error: "Order not found",
       });
+    }
+
+    // Emit WebSocket event
+    const io = req.app.get("io");
+    if (io) {
+      // Notify the specific order room (for the user tracking page)
+      io.to(`order-${id}`).emit("orderStatusUpdated", {
+        orderId: id,
+        status: status,
+        updatedOrder: order,
+      });
+
+      // Notify the admin room (for the dashboard)
+      io.to("admin").emit("orderUpdated", order); 
     }
 
     res.json({

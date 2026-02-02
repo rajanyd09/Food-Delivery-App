@@ -80,9 +80,11 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
   const setupWebSocket = () => {
     socketService.connect();
+    socketService.joinAdminRoom();
 
     socketService.socket.on("connect", () => {
       console.log("Connected to WebSocket for real-time orders");
+      socketService.joinAdminRoom();
     });
 
     socketService.socket.on("newOrder", (data) => {

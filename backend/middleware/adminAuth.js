@@ -3,10 +3,7 @@ const User = require("../models/User");
 
 const adminAuth = async (req, res, next) => {
   try {
-    console.log(
-      "🔍 AdminAuth - Token received:",
-      req.header("Authorization")?.substring(0, 20) + "...",
-    );
+    
 
     const token = req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
@@ -15,11 +12,10 @@ const adminAuth = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
-    console.log("✅ Token decoded:", decoded);
+    
 
     const user = await User.findById(decoded.userId).select("-password");
-    console.log("👤 User found:", user?.email, "Role:", user?.role);
-
+    
     if (!user) {
       console.log("❌ User not found");
       return res.status(401).json({ success: false, error: "User not found" });

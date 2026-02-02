@@ -60,7 +60,7 @@ app.get("/api/health", (req, res) => {
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "*", // Allow all origins for WebSocket as well during debugging
+    origin: allowedOrigins, // Use specific origins instead of wildcard for credentials support
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -71,6 +71,11 @@ io.on("connection", (socket) => {
 
   socket.on("subscribeToOrder", (orderId) => {
     socket.join(`order-${orderId}`);
+  });
+
+  socket.on("joinAdminRoom", () => {
+    socket.join("admin");
+    console.log("Client joined admin room");
   });
 
   socket.on("disconnect", () => {

@@ -40,11 +40,28 @@ const OrderStatusPage = () => {
   const connectWebSocket = () => {
     socketService.connect();
     
+    // Join the specific order room immediately
+    if (orderId) {
+      socketService.joinOrderRoom(orderId);
+    }
+    
+    socketService.socket.on('connect', () => {
+       if (orderId) {
+         socketService.joinOrderRoom(orderId);
+       }
+    });
+    
     // Listen for order updates
-    socketService.socket.on('orderUpdated', (data) => {
-      if (data._id === orderId || data.orderId === orderId) {
-        setOrder(data);
-        toast.success(`Order status updated to: ${data.status || data.newStatus}`);
+    socketService.socket.on('orderStatusUpdated', (data) => {
+      if (data.orderId === orderId || data._id === orderId) {
+        // Update the order with the new status
+        setOrder(prevOrder => ({
+          ...prevOrder, 
+          status: data.status,
+          ...data.updatedOrder // Merge any other updated fields
+        }));
+        
+        toast.success(`Order status updated to: ${data.status}`);
       }
     });
   };
