@@ -9,5 +9,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Chatbot Widget -->
+    <link rel="stylesheet" href="/chatbot-widget.css" />
+    <script>
+      window.chatbotConfig = {
+        chatbotId: "6981e41e204132587a0a8c02",
+        apiUrl: "http://localhost:3000/api",
+        botName: "AI Assistant",
+        primaryColor: "#101bb7",
+        welcomeMessage: "Hi! How can I help you today?",
+        placeholder: "Type your message...",
+        position: "bottom-right",
+        showBranding: true,
+        autoOpen: false,
+      };
+    </script>
+    <script src="/chatbot-widget.js"></script>
   </body>
 </html>
