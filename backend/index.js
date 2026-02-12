@@ -72,6 +72,7 @@ io.on("connection", (socket) => {
 
   socket.on("subscribeToOrder", (orderId) => {
     socket.join(`order-${orderId}`);
+    console.log(`Client subscribed to order: ${orderId}`);
   });
 
   socket.on("joinAdminRoom", () => {

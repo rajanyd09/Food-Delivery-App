@@ -8,7 +8,7 @@ class SocketService {
   }
 
   connect() {
-    if (this.connected) return this.socket;
+    if (this.socket && this.socket.connected) return this.socket;
 
     // Handle URL: Ensure we connect to base URL (port 4000) not /api
     let rawUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";

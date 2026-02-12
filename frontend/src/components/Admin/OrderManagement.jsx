@@ -97,7 +97,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
     });
 
     socketService.socket.on("orderUpdated", (data) => {
-      toast.info(`🔄 Order #${data.orderNumber} updated to ${data.newStatus}`, {
+      toast.info(`🔄 Order #${data.orderNumber} updated to ${data.status}`, {
         duration: 3000,
       });
       refreshOrders();
