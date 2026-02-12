@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { menuService } from "../../services/api";
+import { menuService, categoryService } from "../../services/api";
 import toast from "react-hot-toast";
 import {
   FaPlus,
@@ -26,7 +26,7 @@ const MenuItemManagement = () => {
     description: "",
     price: "",
     image: "",
-    category: "pizza",
+    category: "",
     available: true,
   });
   const [imagePreview, setImagePreview] = useState("");
@@ -36,22 +36,43 @@ const MenuItemManagement = () => {
     available: 0,
     unavailable: 0,
   });
+  const [categories, setCategories] = useState([]);
 
-  // Fetch menu items
+  // Fetch menu items and categories
   useEffect(() => {
-    fetchMenuItems();
+    fetchData();
   }, []);
 
-  const fetchMenuItems = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await menuService.getAllMenuItems();
-      setMenuItems(response.data || []);
-      calculateStats(response.data || []);
+      const [menuRes, catRes] = await Promise.all([
+        menuService.getAllMenuItems(),
+        categoryService.getAllCategories(),
+      ]);
+      setMenuItems(menuRes.data || []);
+      setCategories(catRes.data || []);
+      calculateStats(menuRes.data || []);
+      
+      // Set default category if available
+      if (catRes.data && catRes.data.length > 0) {
+        setFormData(prev => ({ ...prev, category: catRes.data[0].name }));
+      }
     } catch (error) {
-      toast.error("Failed to fetch menu items");
+      toast.error("Failed to fetch data");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchMenuItems = async () => {
+    // legacy support if needed, but fetchData handles init
+    try {
+        const response = await menuService.getAllMenuItems();
+        setMenuItems(response.data || []);
+        calculateStats(response.data || []);
+    } catch (error) {
+        console.error("Error refreshing items", error);
     }
   };
 
@@ -166,17 +187,16 @@ const MenuItemManagement = () => {
       item.category.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const categories = ["pizza", "burger", "pasta", "drinks", "dessert"];
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl md:text-3xl font-bold text-white">
             Menu Management
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-400 mt-1">
             Add, edit, and manage your restaurant menu items
           </p>
         </div>
@@ -193,61 +213,61 @@ const MenuItemManagement = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">
                 Total Items
               </p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">
+              <p className="text-3xl font-bold text-white mt-1">
                 {stats.total}
               </p>
             </div>
-            <div className="p-3 bg-gray-100 rounded-xl">
-              <FaUtensils className="text-2xl text-gray-600" />
+            <div className="p-3 bg-gray-800 rounded-xl">
+              <FaUtensils className="text-2xl text-gray-400" />
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">
                 Available
               </p>
-              <p className="text-3xl font-bold text-green-600 mt-1">
+              <p className="text-3xl font-bold text-green-400 mt-1">
                 {stats.available}
               </p>
             </div>
-            <div className="p-3 bg-green-50 rounded-xl">
-              <FaCheck className="text-2xl text-green-500" />
+            <div className="p-3 bg-green-900/20 rounded-xl">
+              <FaCheck className="text-2xl text-green-400" />
             </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              <p className="text-sm font-medium text-gray-400 uppercase tracking-wide">
                 Unavailable
               </p>
-              <p className="text-3xl font-bold text-red-600 mt-1">
+              <p className="text-3xl font-bold text-red-400 mt-1">
                 {stats.unavailable}
               </p>
             </div>
-            <div className="p-3 bg-red-50 rounded-xl">
-              <FaTimes className="text-2xl text-red-500" />
+            <div className="p-3 bg-red-900/20 rounded-xl">
+              <FaTimes className="text-2xl text-red-400" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Search & Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-gray-900 rounded-xl shadow-sm border border-gray-800 p-6">
         <div className="relative">
-          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             placeholder="Search menu items by name or category..."
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-3 bg-gray-950 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -255,19 +275,19 @@ const MenuItemManagement = () => {
       </div>
 
       {/* Menu Items Grid */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-gray-900 rounded-xl shadow-sm border border-gray-800 overflow-hidden">
         {loading ? (
           <div className="p-12 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-500">Loading menu items...</p>
+            <p className="text-gray-400">Loading menu items...</p>
           </div>
         ) : filteredItems.length === 0 ? (
           <div className="p-16 text-center">
-            <FaUtensils className="w-20 h-20 text-gray-300 mx-auto mb-6" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <FaUtensils className="w-20 h-20 text-gray-700 mx-auto mb-6" />
+            <h3 className="text-xl font-semibold text-white mb-2">
               No menu items found
             </h3>
-            <p className="text-gray-500 mb-6">
+            <p className="text-gray-400 mb-6">
               Try adjusting your search or add new items
             </p>
             <button
@@ -279,32 +299,32 @@ const MenuItemManagement = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-800">
+              <thead className="bg-gray-900/50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Image
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Category
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Price
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-gray-900 divide-y divide-gray-800">
                 {filteredItems.map((item) => (
-                  <tr key={item._id} className="hover:bg-gray-50">
+                  <tr key={item._id} className="hover:bg-gray-800/50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <img
                         src={item.image}
@@ -313,10 +333,10 @@ const MenuItemManagement = () => {
                       />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-white">
                         {item.name}
                       </div>
-                      <div className="text-sm text-gray-500 truncate max-w-xs">
+                      <div className="text-sm text-gray-400 truncate max-w-xs">
                         {item.description}
                       </div>
                     </td>
@@ -324,21 +344,21 @@ const MenuItemManagement = () => {
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
                           item.category === "pizza"
-                            ? "bg-red-100 text-red-800"
+                            ? "bg-red-500/10 text-red-400 border border-red-500/20"
                             : item.category === "burger"
-                              ? "bg-yellow-100 text-yellow-800"
+                              ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
                               : item.category === "pasta"
-                                ? "bg-blue-100 text-blue-800"
+                                ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
                                 : item.category === "drinks"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-purple-100 text-purple-800"
+                                  ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                                  : "bg-purple-500/10 text-purple-400 border border-purple-500/20"
                         }`}
                       >
                         {item.category}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-2xl font-bold text-gray-900">
+                      <span className="text-2xl font-bold text-white">
                         ₹{item.price}
                       </span>
                     </td>
@@ -346,8 +366,8 @@ const MenuItemManagement = () => {
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
                           item.available
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                            ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                            : "bg-red-500/10 text-red-400 border border-red-500/20"
                         }`}
                       >
                         {item.available ? "Available" : "Unavailable"}
@@ -361,14 +381,14 @@ const MenuItemManagement = () => {
                           setShowAddModal(true);
                           setImagePreview(item.image);
                         }}
-                        className="text-blue-600 hover:text-blue-900 p-1"
+                        className="text-blue-400 hover:text-blue-300 p-1"
                         title="Edit"
                       >
                         <FaEdit />
                       </button>
                       <button
                         onClick={() => handleDelete(item._id)}
-                        className="text-red-600 hover:text-red-900 p-1"
+                        className="text-red-400 hover:text-red-300 p-1"
                         title="Delete"
                       >
                         <FaTrash />
@@ -384,10 +404,10 @@ const MenuItemManagement = () => {
 
       {/* Add/Edit Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-8 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-800">
+            <div className="p-8 border-b border-gray-800 bg-gray-900 sticky top-0 z-10">
+              <h2 className="text-2xl font-bold text-white">
                 {editingItem ? "Edit Menu Item" : "Add New Menu Item"}
               </h2>
             </div>
@@ -395,7 +415,7 @@ const MenuItemManagement = () => {
             <form onSubmit={handleSubmit} className="p-8 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
                     Item Name *
                   </label>
                   <input
@@ -404,13 +424,13 @@ const MenuItemManagement = () => {
                     required
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-gray-950 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-600"
                     placeholder="e.g. Margherita Pizza"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
                     Category *
                   </label>
                   <select
@@ -418,18 +438,18 @@ const MenuItemManagement = () => {
                     required
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-gray-950 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white appearance-none"
                   >
                     {categories.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                      <option key={cat._id} value={cat.name}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
                     Price (₹)*
                   </label>
                   <input
@@ -440,30 +460,30 @@ const MenuItemManagement = () => {
                     required
                     value={formData.price}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-gray-950 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-600"
                     placeholder="12.99"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
                     Available
                   </label>
-                  <label className="flex items-center space-x-2">
+                  <label className="flex items-center space-x-2 p-3 border border-gray-700 rounded-xl bg-gray-950">
                     <input
                       name="available"
                       type="checkbox"
                       checked={formData.available}
                       onChange={handleInputChange}
-                      className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-600 rounded bg-gray-900"
                     />
-                    <span className="text-sm text-gray-700">Show in menu</span>
+                    <span className="text-sm text-gray-300">Show in menu</span>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-400 mb-2">
                   Description *
                 </label>
                 <textarea
@@ -472,50 +492,55 @@ const MenuItemManagement = () => {
                   rows={4}
                   value={formData.description}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                  className="w-full px-4 py-3 bg-gray-950 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical text-white placeholder-gray-600"
                   placeholder="Delicious thin crust pizza topped with fresh mozzarella, basil, and tomato sauce."
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-400 mb-2">
                   Image{" "}
                   {imageFile && (
-                    <span className="text-green-600">(Updated)</span>
+                    <span className="text-green-400 font-normal ml-2 text-xs">(Updated)</span>
                   )}
                 </label>
                 <div className="flex items-center space-x-4">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  />
-                  <FaUpload className="text-2xl text-gray-400" />
+                  <div className="flex-1 relative">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    />
+                    <div className="w-full px-4 py-3 border border-gray-700 rounded-xl bg-gray-950 flex items-center justify-between text-gray-400 hover:bg-gray-800 transition-colors">
+                      <span className="truncate">{imageFile ? imageFile.name : "Choose an image file..."}</span>
+                      <FaUpload className="text-gray-500 ml-2" />
+                    </div>
+                  </div>
                 </div>
 
                 {imagePreview && (
-                  <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-xl text-center bg-gray-50">
+                  <div className="mt-4 p-4 border border-dashed border-gray-700 rounded-xl text-center bg-gray-950/50">
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="w-32 h-32 object-cover rounded-lg mx-auto mb-2"
+                      className="w-32 h-32 object-cover rounded-lg mx-auto mb-2 border border-gray-700"
                     />
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-500">
                       {imageFile ? imageFile.name : "Current image"}
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="flex justify-end space-x-3 pt-4">
+              <div className="flex justify-end space-x-3 pt-6 border-t border-gray-800">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAddModal(false);
                     resetForm();
                   }}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium"
+                  className="px-6 py-3 border border-gray-700 text-gray-300 rounded-xl hover:bg-gray-800 hover:text-white transition-colors font-medium"
                 >
                   <FaTimes className="mr-2 inline" />
                   Cancel

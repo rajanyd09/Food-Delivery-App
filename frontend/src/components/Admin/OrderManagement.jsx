@@ -29,6 +29,7 @@ import {
   FaTruck,
   FaHome,
   FaCalendarAlt,
+  FaChevronDown,
 } from "react-icons/fa";
 
 const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
@@ -633,21 +634,21 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
   };
 
   return (
-    <div className="space-y-6 ">
+    <div className="space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl md:text-3xl font-bold text-white">
             Order Management
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-400 mt-1">
             Manage and track all customer orders in real-time
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <button
             onClick={handleExportOrders}
-            className="flex items-center px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 shadow-sm"
+            className="flex items-center px-4 py-2.5 bg-green-600/90 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-sm backdrop-blur-sm"
           >
             <FaDownload className="mr-2" />
             Export CSV
@@ -665,83 +666,83 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 md:gap-4">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Orders</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+              <p className="text-sm text-gray-400 font-medium">Total</p>
+              <p className="text-2xl font-bold text-white">{stats.total}</p>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-blue-500/10 rounded-lg">
               <FaReceipt className="text-blue-500 text-xl" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Pending</p>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-sm text-gray-400 font-medium">Pending</p>
+              <p className="text-2xl font-bold text-blue-500">
                 {stats.pending}
               </p>
             </div>
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-blue-500/10 rounded-lg">
               <FaClock className="text-blue-500 text-xl" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Preparing</p>
-              <p className="text-2xl font-bold text-yellow-600">
+              <p className="text-sm text-gray-400 font-medium">Preparing</p>
+              <p className="text-2xl font-bold text-yellow-500">
                 {stats.preparing}
               </p>
             </div>
-            <div className="p-3 bg-yellow-50 rounded-lg">
+            <div className="p-3 bg-yellow-500/10 rounded-lg">
               <FaUtensils className="text-yellow-500 text-xl" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Delivery</p>
-              <p className="text-2xl font-bold text-orange-600">
+              <p className="text-sm text-gray-400 font-medium">Delivery</p>
+              <p className="text-2xl font-bold text-orange-500">
                 {stats.outForDelivery}
               </p>
             </div>
-            <div className="p-3 bg-orange-50 rounded-lg">
+            <div className="p-3 bg-orange-500/10 rounded-lg">
               <FaMotorcycle className="text-orange-500 text-xl" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Delivered</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-sm text-gray-400 font-medium">Delivered</p>
+              <p className="text-2xl font-bold text-green-500">
                 {stats.delivered}
               </p>
             </div>
-            <div className="p-3 bg-green-50 rounded-lg">
+            <div className="p-3 bg-green-500/10 rounded-lg">
               <FaCheck className="text-green-500 text-xl" />
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Cancelled</p>
-              <p className="text-2xl font-bold text-red-600">
+              <p className="text-sm text-gray-400 font-medium">Cancelled</p>
+              <p className="text-2xl font-bold text-red-500">
                 {stats.cancelled}
               </p>
             </div>
-            <div className="p-3 bg-red-50 rounded-lg">
+            <div className="p-3 bg-red-500/10 rounded-lg">
               <FaTimes className="text-red-500 text-xl" />
             </div>
           </div>
@@ -749,17 +750,17 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
       </div>
 
       {/* Filters & Search Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 md:p-6">
+      <div className="bg-gray-900 rounded-xl shadow-lg border border-gray-800 p-5 md:p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
           {/* Search Input */}
           <div className="relative flex-1 md:mr-4">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FaSearch className="text-gray-400" />
+              <FaSearch className="text-gray-500" />
             </div>
             <input
               type="text"
-              placeholder="Search orders by order #, customer name, phone, or email..."
-              className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder="Search orders..."
+              className="pl-10 w-full px-4 py-3 bg-gray-950 border border-gray-700/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -768,7 +769,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
           {/* Filter Toggle Button */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center px-4 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200 border border-gray-300"
+            className="flex items-center px-4 py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors duration-200 border border-gray-700"
           >
             <FaFilter className="mr-2" />
             {showFilters ? "Hide Filters" : "Show Filters"}
@@ -777,15 +778,15 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
         {/* Advanced Filters */}
         {showFilters && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-800">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Status Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-400 mb-2">
                   Status Filter
                 </label>
                 <select
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full px-3 py-2.5 bg-gray-950 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
                 >
@@ -800,11 +801,11 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
               {/* Date Filter */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-400 mb-2">
                   Date Range
                 </label>
                 <select
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full px-3 py-2.5 bg-gray-950 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                   value={dateFilter}
                   onChange={(e) => setDateFilter(e.target.value)}
                 >
@@ -818,11 +819,11 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
               {/* Sort By */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-400 mb-2">
                   Sort By
                 </label>
                 <select
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  className="w-full px-3 py-2.5 bg-gray-950 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
@@ -836,25 +837,25 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
               {/* Sort Order & Items Per Page */}
               <div className="flex space-x-2">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
                     Order
                   </label>
                   <button
                     onClick={() =>
                       setSortOrder(sortOrder === "asc" ? "desc" : "asc")
                     }
-                    className="w-full flex items-center justify-center px-3 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                    className="w-full flex items-center justify-center px-3 py-2.5 bg-gray-950 border border-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200"
                   >
                     <FaSort className="mr-2" />
                     {sortOrder === "asc" ? "Ascending" : "Descending"}
                   </button>
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
                     Items/Page
                   </label>
                   <select
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    className="w-full px-3 py-2.5 bg-gray-950 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                     value={itemsPerPage}
                     onChange={(e) => setItemsPerPage(Number(e.target.value))}
                   >
@@ -916,10 +917,10 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-gray-900 rounded-xl shadow-lg border border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-800">
+            <thead className="bg-gray-900/50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Order #
@@ -947,7 +948,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-gray-900 divide-y divide-gray-800">
               {loading && currentOrders.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="px-6 py-12 text-center">
@@ -989,10 +990,10 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                 currentOrders.map((order) => (
                   <tr
                     key={order._id}
-                    className="hover:bg-gray-50 transition-colors duration-150"
+                    className="hover:bg-gray-800/50 transition-colors duration-150"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-semibold text-gray-900 text-sm">
+                      <div className="font-semibold text-white text-sm">
                         #{order.orderNumber}
                       </div>
                       <div className="text-xs text-gray-500 mt-1 flex items-center">
@@ -1001,7 +1002,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-medium text-gray-900 text-sm">
+                      <div className="font-medium text-white text-sm">
                         {order.customer?.name || "Guest"}
                       </div>
                       <div className="text-xs text-gray-500 mt-1 flex items-center">
@@ -1014,7 +1015,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-gray-300">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </div>
                       <div className="text-xs text-gray-500">
@@ -1025,8 +1026,8 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900 flex items-center">
-                        <FaShoppingCart className="mr-2 text-gray-400" />
+                      <div className="text-sm text-gray-300 flex items-center">
+                        <FaShoppingCart className="mr-2 text-gray-500" />
                         {order.items?.reduce(
                           (sum, item) => sum + (item.quantity || 1),
                           0,
@@ -1045,7 +1046,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-semibold text-gray-900">
+                      <div className="font-semibold text-white">
                         ₹{order.totalAmount?.toFixed(2)}
                       </div>
                       {order.deliveryFee > 0 && (
@@ -1055,31 +1056,35 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center">
+                      <div className="flex items-center mb-2">
                         {getStatusIcon(order.status)}
-                        <span className="ml-2 text-sm font-medium">
+                        <span className="ml-2 text-sm font-medium text-white">
                           {order.status}
                         </span>
                       </div>
                       {getNextStatusOptions(order.status).length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-1">
-                          {getNextStatusOptions(order.status).map((status) => (
-                            <button
-                              key={status}
-                              onClick={() =>
-                                updateOrderStatus(order._id, status)
-                              }
-                              className={`px-2 py-1 text-xs rounded transition-colors duration-150 ${
-                                status === "Cancelled"
-                                  ? "bg-red-50 text-red-700 hover:bg-red-100 border border-red-200"
-                                  : "bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
-                              }`}
-                            >
-                              {status === "Cancelled"
-                                ? "Cancel"
-                                : `Mark as ${status}`}
-                            </button>
-                          ))}
+                        <div className="relative">
+                          <select
+                            value=""
+                            onChange={(e) =>
+                              updateOrderStatus(order._id, e.target.value)
+                            }
+                            className="block w-full pl-3 pr-8 py-1.5 text-xs bg-gray-800 border border-gray-700 text-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 appearance-none cursor-pointer hover:bg-gray-750 transition-colors"
+                          >
+                            <option value="" disabled>
+                              Update Status
+                            </option>
+                            {getNextStatusOptions(order.status).map(
+                              (status) => (
+                                <option key={status} value={status}>
+                                  Mark as {status}
+                                </option>
+                              ),
+                            )}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <FaChevronDown className="h-3 w-3" />
+                          </div>
                         </div>
                       )}
                     </td>
@@ -1110,21 +1115,21 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                       <div className="flex space-x-1">
                         <button
                           onClick={() => handleViewOrder(order)}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-150"
+                          className="p-2 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors duration-150"
                           title="View Details"
                         >
                           <FaEye />
                         </button>
                         <button
                           onClick={() => handlePrintOrder(order)}
-                          className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors duration-150"
+                          className="p-2 text-gray-400 hover:bg-gray-700/50 rounded-lg transition-colors duration-150"
                           title="Print Receipt"
                         >
                           <FaPrint />
                         </button>
                         <button
                           onClick={() => handleEditOrder(order)}
-                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="p-2 text-green-400 hover:bg-green-500/10 rounded-lg transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Edit Order"
                           disabled={
                             order.status === "Delivered" ||
@@ -1144,23 +1149,23 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
         {/* Pagination */}
         {filteredOrders.length > itemsPerPage && (
-          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+          <div className="px-6 py-4 border-t border-gray-800 bg-gray-900">
             <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
-              <div className="text-sm text-gray-700">
+              <div className="text-sm text-gray-400">
                 Showing{" "}
-                <span className="font-semibold">{indexOfFirstItem + 1}</span> to{" "}
-                <span className="font-semibold">
+                <span className="font-semibold text-white">{indexOfFirstItem + 1}</span> to{" "}
+                <span className="font-semibold text-white">
                   {Math.min(indexOfLastItem, filteredOrders.length)}
                 </span>{" "}
                 of{" "}
-                <span className="font-semibold">{filteredOrders.length}</span>{" "}
+                <span className="font-semibold text-white">{filteredOrders.length}</span>{" "}
                 orders
               </div>
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => goToPage(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="px-3 py-2 text-sm border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors duration-150"
+                  className="px-3 py-2 text-sm border border-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 text-gray-300 transition-colors duration-150"
                 >
                   Previous
                 </button>
@@ -1190,7 +1195,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                           className={`px-3 py-2 text-sm rounded-lg transition-colors duration-150 ${
                             currentPage === i
                               ? "bg-blue-600 text-white"
-                              : "border border-gray-300 hover:bg-gray-50"
+                              : "border border-gray-700 text-gray-400 hover:bg-gray-800"
                           }`}
                         >
                           {i}
@@ -1204,7 +1209,7 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                 <button
                   onClick={() => goToPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-2 text-sm border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors duration-150"
+                  className="px-3 py-2 text-sm border border-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-800 text-gray-300 transition-colors duration-150"
                 >
                   Next
                 </button>
@@ -1226,15 +1231,15 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
             ></div>
 
             {/* Modal container */}
-            <div className="relative inline-block bg-white rounded-2xl text-left overflow-hidden shadow-2xl transition-all sm:my-8 sm:max-w-5xl sm:w-full">
+            <div className="relative inline-block bg-gray-900 rounded-2xl text-left overflow-hidden shadow-2xl transition-all sm:my-8 sm:max-w-5xl sm:w-full border border-gray-800">
               {/* Modal header */}
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 sm:px-8 sm:py-6">
+              <div className="bg-gradient-to-r from-blue-900 to-blue-800 px-6 py-4 sm:px-8 sm:py-6 border-b border-gray-800">
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="text-2xl font-bold text-white">
                       Order #{selectedOrder.orderNumber}
                     </h3>
-                    <p className="text-blue-100 mt-1">
+                    <p className="text-blue-200 mt-1">
                       <FaCalendarAlt className="inline mr-2" />
                       {new Date(selectedOrder.createdAt).toLocaleString()}
                     </p>
@@ -1242,14 +1247,14 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                   <div className="flex items-center space-x-3">
                     <button
                       onClick={() => handlePrintOrder(selectedOrder)}
-                      className="p-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors duration-150"
+                      className="p-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors duration-150"
                       title="Print Receipt"
                     >
                       <FaPrint />
                     </button>
                     <button
                       onClick={() => setShowModal(false)}
-                      className="p-2 text-white hover:text-gray-200"
+                      className="p-2 text-gray-400 hover:text-white"
                     >
                       <FaTimes className="text-xl" />
                     </button>
@@ -1258,62 +1263,62 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
               </div>
 
               {/* Modal body */}
-              <div className="px-6 py-6 sm:px-8 sm:py-8 max-h-[70vh] overflow-y-auto">
+              <div className="px-6 py-6 sm:px-8 sm:py-8 max-h-[70vh] overflow-y-auto bg-gray-900">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   {/* Left column - Customer & Delivery */}
                   <div className="lg:col-span-2 space-y-6">
                     {/* Customer Information */}
-                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                      <h4 className="font-semibold text-gray-900 text-lg mb-4 flex items-center">
-                        <FaUser className="mr-2 text-blue-500" />
+                    <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
+                      <h4 className="font-semibold text-white text-lg mb-4 flex items-center">
+                        <FaUser className="mr-2 text-blue-400" />
                         Customer Information
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-3">
                           <div>
-                            <p className="text-sm text-gray-500">Full Name</p>
-                            <p className="font-medium text-gray-900">
+                            <p className="text-sm text-gray-400">Full Name</p>
+                            <p className="font-medium text-white">
                               {selectedOrder.customer?.name}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-400">
                               Phone Number
                             </p>
-                            <p className="font-medium text-gray-900 flex items-center">
-                              <FaPhone className="mr-2 text-gray-400" />
+                            <p className="font-medium text-white flex items-center">
+                              <FaPhone className="mr-2 text-gray-500" />
                               {selectedOrder.customer?.phone}
                             </p>
                           </div>
                         </div>
                         <div className="space-y-3">
                           <div>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-400">
                               Email Address
                             </p>
-                            <p className="font-medium text-gray-900 flex items-center">
-                              <FaEnvelope className="mr-2 text-gray-400" />
+                            <p className="font-medium text-white flex items-center">
+                              <FaEnvelope className="mr-2 text-gray-500" />
                               {selectedOrder.customer?.email || "N/A"}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-400">
                               Delivery Address
                             </p>
-                            <p className="font-medium text-gray-900 flex items-start">
-                              <FaHome className="mr-2 text-gray-400 mt-1 flex-shrink-0" />
+                            <p className="font-medium text-white flex items-start">
+                              <FaHome className="mr-2 text-gray-500 mt-1 flex-shrink-0" />
                               <span>{selectedOrder.customer?.address}</span>
                             </p>
                           </div>
                         </div>
                       </div>
                       {selectedOrder.deliveryInstructions && (
-                        <div className="mt-6 pt-6 border-t border-gray-200">
-                          <p className="text-sm text-gray-500 mb-2">
+                        <div className="mt-6 pt-6 border-t border-gray-700">
+                          <p className="text-sm text-gray-400 mb-2">
                             Delivery Instructions
                           </p>
-                          <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4">
-                            <p className="text-yellow-800 flex items-start">
+                          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                            <p className="text-yellow-400 flex items-start">
                               <FaExclamationTriangle className="mr-2 mt-1 flex-shrink-0" />
                               {selectedOrder.deliveryInstructions}
                             </p>
@@ -1324,51 +1329,51 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
 
                     {/* Order Items */}
                     <div>
-                      <h4 className="font-semibold text-gray-900 text-lg mb-4 flex items-center">
-                        <FaShoppingCart className="mr-2 text-green-500" />
+                      <h4 className="font-semibold text-white text-lg mb-4 flex items-center">
+                        <FaShoppingCart className="mr-2 text-green-400" />
                         Order Items ({selectedOrder.items?.length || 0})
                       </h4>
-                      <div className="overflow-hidden border border-gray-200 rounded-xl">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead className="bg-gray-50">
+                      <div className="overflow-hidden border border-gray-700 rounded-xl">
+                        <table className="min-w-full divide-y divide-gray-700">
+                          <thead className="bg-gray-800">
                             <tr>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Item
                               </th>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Quantity
                               </th>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Unit Price
                               </th>
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                                 Total
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="bg-white divide-y divide-gray-200">
+                          <tbody className="bg-gray-900 divide-y divide-gray-800">
                             {selectedOrder.items?.map((item, index) => (
-                              <tr key={index} className="hover:bg-gray-50">
+                              <tr key={index} className="hover:bg-gray-800/50">
                                 <td className="px-6 py-4">
-                                  <div className="font-medium text-gray-900">
+                                  <div className="font-medium text-white">
                                     {item.menuItem?.name || item.name}
                                   </div>
                                   {item.specialInstructions && (
-                                    <div className="text-sm text-gray-500 mt-1 bg-gray-50 p-2 rounded">
-                                      <span className="font-medium">Note:</span>{" "}
+                                    <div className="text-sm text-gray-400 mt-1 bg-gray-800 p-2 rounded border border-gray-700">
+                                      <span className="font-medium text-gray-300">Note:</span>{" "}
                                       {item.specialInstructions}
                                     </div>
                                   )}
                                 </td>
                                 <td className="px-6 py-4">
-                                  <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-800 rounded-full font-medium">
+                                  <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-500/10 text-blue-400 rounded-full font-medium border border-blue-500/20">
                                     {item.quantity}
                                   </span>
                                 </td>
-                                <td className="px-6 py-4 text-gray-900">
+                                <td className="px-6 py-4 text-gray-300">
                                   ₹{item.price?.toFixed(2)}
                                 </td>
-                                <td className="px-6 py-4 font-semibold text-gray-900">
+                                <td className="px-6 py-4 font-semibold text-white">
                                   ₹
                                   {(
                                     (item.price || 0) * (item.quantity || 1)
@@ -1385,40 +1390,47 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                   {/* Right column - Order Summary & Actions */}
                   <div className="space-y-6">
                     {/* Order Status Card */}
-                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                      <h4 className="font-semibold text-gray-900 text-lg mb-4 flex items-center">
+                    <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
+                      <h4 className="font-semibold text-white text-lg mb-4 flex items-center">
                         {getStatusIcon(selectedOrder.status)}
                         <span className="ml-2">Order Status</span>
                       </h4>
                       <div
-                        className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${getStatusColor(selectedOrder.status)} mb-6`}
+                        className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border ${getStatusColor(selectedOrder.status)} mb-6`}
                       >
                         {selectedOrder.status}
                       </div>
 
                       <div className="space-y-3">
-                        <p className="text-sm text-gray-600">Update Status:</p>
+                        <p className="text-sm text-gray-400">Update Status:</p>
                         {getNextStatusOptions(selectedOrder.status).length >
                         0 ? (
-                          getNextStatusOptions(selectedOrder.status).map(
-                            (status) => (
-                              <button
-                                key={status}
-                                onClick={() =>
-                                  updateOrderStatus(selectedOrder._id, status)
-                                }
-                                className={`w-full px-4 py-3 text-sm rounded-lg transition-colors duration-150 ${
-                                  status === "Cancelled"
-                                    ? "bg-red-50 text-red-700 hover:bg-red-100 border border-red-200"
-                                    : "bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
-                                }`}
-                              >
-                                {status === "Cancelled"
-                                  ? "Cancel Order"
-                                  : `Mark as ${status}`}
-                              </button>
-                            ),
-                          )
+                          <div className="relative">
+                            <select
+                              value=""
+                              onChange={(e) =>
+                                updateOrderStatus(
+                                  selectedOrder._id,
+                                  e.target.value,
+                                )
+                              }
+                              className="block w-full pl-4 pr-10 py-3 text-sm bg-gray-900 border border-gray-700 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500 appearance-none cursor-pointer hover:border-gray-600 transition-colors"
+                            >
+                              <option value="" disabled>
+                                Select New Status...
+                              </option>
+                              {getNextStatusOptions(selectedOrder.status).map(
+                                (status) => (
+                                  <option key={status} value={status}>
+                                    Mark as {status}
+                                  </option>
+                                ),
+                              )}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                              <FaChevronDown className="h-4 w-4" />
+                            </div>
+                          </div>
                         ) : (
                           <p className="text-sm text-gray-500 italic">
                             No further status updates available
@@ -1428,37 +1440,37 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                     </div>
 
                     {/* Order Summary */}
-                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                      <h4 className="font-semibold text-gray-900 text-lg mb-4">
+                    <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
+                      <h4 className="font-semibold text-white text-lg mb-4">
                         Order Summary
                       </h4>
                       <div className="space-y-3">
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Subtotal</span>
-                          <span>₹{selectedOrder.subtotal?.toFixed(2)}</span>
+                          <span className="text-gray-400">Subtotal</span>
+                          <span className="text-white">₹{selectedOrder.subtotal?.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Delivery Fee</span>
-                          <span>₹{selectedOrder.deliveryFee?.toFixed(2)}</span>
+                          <span className="text-gray-400">Delivery Fee</span>
+                          <span className="text-white">₹{selectedOrder.deliveryFee?.toFixed(2)}</span>
                         </div>
                         {selectedOrder.taxAmount > 0 && (
                           <div className="flex justify-between text-sm">
-                            <span className="text-gray-600">Tax</span>
-                            <span>₹{selectedOrder.taxAmount?.toFixed(2)}</span>
+                            <span className="text-gray-400">Tax</span>
+                            <span className="text-white">₹{selectedOrder.taxAmount?.toFixed(2)}</span>
                           </div>
                         )}
                         {selectedOrder.discountAmount > 0 && (
-                          <div className="flex justify-between text-sm text-green-600">
+                          <div className="flex justify-between text-sm text-green-400">
                             <span>Discount</span>
                             <span>
                               -₹{selectedOrder.discountAmount?.toFixed(2)}
                             </span>
                           </div>
                         )}
-                        <div className="pt-3 border-t border-gray-200">
+                        <div className="pt-3 border-t border-gray-700">
                           <div className="flex justify-between font-semibold text-lg">
-                            <span>Total Amount</span>
-                            <span className="text-blue-600">
+                            <span className="text-white">Total Amount</span>
+                            <span className="text-blue-400">
                               ₹{selectedOrder.totalAmount?.toFixed(2)}
                             </span>
                           </div>
@@ -1467,36 +1479,36 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
                     </div>
 
                     {/* Payment Information */}
-                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                      <h4 className="font-semibold text-gray-900 text-lg mb-4 flex items-center">
-                        <FaCreditCard className="mr-2 text-purple-500" />
+                    <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
+                      <h4 className="font-semibold text-white text-lg mb-4 flex items-center">
+                        <FaCreditCard className="mr-2 text-purple-400" />
                         Payment Information
                       </h4>
                       <div className="space-y-3">
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Method</span>
-                          <span className="font-medium">
+                          <span className="text-sm text-gray-400">Method</span>
+                          <span className="font-medium text-white">
                             {selectedOrder.paymentMethod}
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Status</span>
+                          <span className="text-sm text-gray-400">Status</span>
                           <span
                             className={`font-medium ${
                               selectedOrder.paymentStatus === "Paid"
-                                ? "text-green-600"
-                                : "text-yellow-600"
+                                ? "text-green-400"
+                                : "text-yellow-400"
                             }`}
                           >
                             {selectedOrder.paymentStatus || "Pending"}
                           </span>
                         </div>
                         {selectedOrder.transactionId && (
-                          <div className="pt-3 border-t border-gray-200">
-                            <p className="text-sm text-gray-600 mb-1">
+                          <div className="pt-3 border-t border-gray-700">
+                            <p className="text-sm text-gray-400 mb-1">
                               Transaction ID
                             </p>
-                            <p className="font-mono text-xs bg-gray-100 p-2 rounded break-all">
+                            <p className="font-mono text-xs bg-gray-900 p-2 rounded break-all text-gray-300 border border-gray-700">
                               {selectedOrder.transactionId}
                             </p>
                           </div>
@@ -1508,12 +1520,12 @@ const OrderManagement = ({ orders: initialOrders, onRefresh }) => {
               </div>
 
               {/* Modal footer */}
-              <div className="bg-gray-50 px-6 py-4 sm:px-8 sm:py-6 border-t border-gray-200">
+              <div className="bg-gray-900 px-6 py-4 sm:px-8 sm:py-6 border-t border-gray-800">
                 <div className="flex justify-end space-x-3">
                   <button
                     type="button"
                     onClick={() => setShowModal(false)}
-                    className="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-150 font-medium"
+                    className="px-5 py-2.5 border border-gray-700 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white transition-colors duration-150 font-medium"
                   >
                     Close
                   </button>

@@ -16,6 +16,8 @@ import {
 import DashboardOverview from "./DashboardOverview";
 import OrderManagement from "./OrderManagement";
 import MenuItemManagement from "./MenuItemManagement";
+import CategoryManagement from "./CategoryManagement";
+import { FaTags } from "react-icons/fa";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -102,141 +104,157 @@ const AdminDashboard = () => {
 
   if (loading && activeTab === "dashboard") {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading admin dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-400">Loading admin dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-950 text-white font-sans">
       {/* Main Layout */}
-      <div className="flex h-screen bg-gray-50">
+      <div className="flex h-screen  overflow-hidden bg-gray-950">
         {/* Sidebar */}
         <div
-          className={`${sidebarOpen ? "w-64" : "w-20"} bg-white border-r border-gray-200 transition-all duration-300 flex flex-col shadow-sm`}
+          className={`${sidebarOpen ? "w-72" : "w-[88px]"} bg-gray-900 border-r border-gray-800 transition-all duration-300 flex flex-col flex-shrink-0 z-50`}
         >
           {/* Sidebar Header */}
-          <div className="p-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              {sidebarOpen && (
-                <div className="flex items-center space-x-2">
-                  <div className="w-9 h-9 flex items-center justify-center">
+          <div className="h-20 flex items-center justify-between px-6 border-b border-gray-800">
+            <div className="flex items-center gap-3 overflow-hidden">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400 flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
                     <img 
                       src="/food-delivery_2947553.png" 
-                      alt="Admin Logo" 
-                      className="w-full h-full object-contain"
+                      alt="Logo" 
+                      className="w-6 h-6 object-contain brightness-0 invert"
                     />
-                  </div>
-                  <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                    Admin Panel
-                  </span>
                 </div>
-              )}
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                {sidebarOpen ? (
-                  <FaTimes className="w-4 h-4 text-gray-600" />
-                ) : (
-                  <FaBars className="w-4 h-4 text-gray-600" />
+                {sidebarOpen && (
+                    <span className="font-bold text-lg text-white whitespace-nowrap tracking-wide">
+                        FoodExpress
+                        <span className="text-blue-400">.</span>
+                    </span>
                 )}
-              </button>
             </div>
+            {sidebarOpen && (
+                 <button
+                    onClick={() => setSidebarOpen(false)}
+                    className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+                  >
+                    <FaTimes size={14} />
+                  </button>
+            )}
           </div>
 
           {/* Navigation */}
-          <div className="flex-1 p-3 overflow-y-auto">
-            <nav className="space-y-1">
-              {[
-                { id: "dashboard", label: "Dashboard", icon: <FaHome /> },
-                {
-                  id: "orders",
-                  label: "Orders",
-                  icon: <FaShoppingCart />,
-                  badge: stats.received,
-                },
-                { id: "menu", label: "Menu Items", icon: <FaUtensils /> },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 ${
-                    activeTab === item.id
-                      ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className={`${sidebarOpen ? "mr-3" : ""}`}>
-                      {item.icon}
-                    </span>
-                    {sidebarOpen && (
-                      <span className="font-medium text-sm">{item.label}</span>
-                    )}
-                  </div>
-                  {item.badge > 0 && sidebarOpen && (
-                    <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold">
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </nav>
+          <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 custom-scrollbar">
+            {!sidebarOpen && (
+                <div className="flex justify-center mb-6">
+                     <button
+                        onClick={() => setSidebarOpen(true)}
+                        className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+                      >
+                        <FaBars size={18} />
+                      </button>
+                </div>
+            )}
+          
+            {[
+                { id: "dashboard", label: "Dashboard", icon: FaHome },
+                { id: "orders", label: "Orders", icon: FaShoppingCart, badge: stats.received },
+                { id: "menu", label: "Menu Items", icon: FaUtensils },
+                { id: "categories", label: "Categories", icon: FaTags },
+            ].map((item) => {
+                const Icon = item.icon;
+                const isActive = activeTab === item.id;
+                
+                return (
+                    <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group relative
+                            ${isActive 
+                                ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" 
+                                : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                            }
+                        `}
+                    >
+                        <Icon className={`text-lg transition-transform group-hover:scale-110 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-white'}`} />
+                        
+                        {sidebarOpen && (
+                            <span className="font-medium text-sm">{item.label}</span>
+                        )}
+
+                        {!sidebarOpen && isActive && (
+                            <div className="absolute left-full ml-4 px-2 py-1 bg-gray-800 text-white text-xs rounded shadow-xl whitespace-nowrap z-50">
+                                {item.label}
+                            </div>
+                        )}
+                        
+                        {item.badge > 0 && (
+                            <span className={`absolute ${sidebarOpen ? 'right-4' : 'top-2 right-2'} flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold ${isActive ? 'bg-white text-blue-600' : 'bg-red-500 text-white'}`}>
+                                {item.badge}
+                            </span>
+                        )}
+                    </button>
+                );
+            })}
           </div>
 
           {/* Sidebar Footer */}
-          <div className="p-3 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-800 bg-gray-900/50">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center px-3 py-2.5 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
+              className={`w-full flex items-center ${sidebarOpen ? 'gap-3 px-4' : 'justify-center'} py-3 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl transition-all`}
             >
-              <FaSignOutAlt className={`${sidebarOpen ? "mr-3" : ""}`} />
-              {sidebarOpen && <span className="font-medium text-sm">Logout</span>}
+              <FaSignOutAlt className="text-lg" />
+              {sidebarOpen && <span className="font-medium text-sm">Sign Out</span>}
             </button>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-gray-950">
           {/* Top Bar */}
-          <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-40 shadow-sm">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {activeTab === "dashboard" && "Dashboard"}
-                  {activeTab === "orders" && "Order Management"}
-                  {activeTab === "menu" && "Menu Management"}
+          <header className="h-20 bg-gray-900/80 backdrop-blur-xl border-b border-gray-800 px-8 flex items-center justify-between sticky top-0 z-30">
+             <div>
+                <h1 className="text-2xl font-bold text-white tracking-tight">
+                    {activeTab === "dashboard" && "Dashboard Overview"}
+                    {activeTab === "orders" && "Order Management"}
+                    {activeTab === "menu" && "Menu Management"}
+                    {activeTab === "categories" && "Category Management"}
                 </h1>
-                <p className="text-sm text-gray-600 mt-0.5">
-                  {user?.name} • Admin
-                </p>
-              </div>
-              <div className="flex items-center space-x-3">
-                <button className="relative p-2.5 rounded-xl hover:bg-gray-100 transition-all">
-                  <FaBell className="w-5 h-5 text-gray-600" />
-                  {stats.received > 0 && (
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
+                <p className="text-sm text-gray-500 mt-1">Welcome back, {user?.name}</p>
+             </div>
+
+             <div className="flex items-center gap-4">
+                 <button className="relative w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-gray-600 transition-all">
+                    <FaBell />
+                    {stats.received > 0 && <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-gray-800"></span>}
+                 </button>
+                 <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 p-0.5">
+                    <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center text-white font-bold text-sm">
+                        {user?.name?.charAt(0) || 'A'}
+                    </div>
+                 </div>
+             </div>
+          </header>
 
           {/* Content Area */}
-          <div className="p-6">
-            {activeTab === "dashboard" && (
-              <DashboardOverview stats={stats} recentOrders={recentOrders} />
-            )}
-            {activeTab === "orders" && (
-              <OrderManagement orders={orders} onRefresh={fetchDashboardData} />
-            )}
-            {activeTab === "menu" && <MenuItemManagement />}
-          </div>
+          <main className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+            <div className="max-w-7xl mx-auto">
+                {activeTab === "dashboard" && (
+                <DashboardOverview stats={stats} recentOrders={recentOrders} />
+                )}
+                {activeTab === "orders" && (
+                <OrderManagement orders={orders} onRefresh={fetchDashboardData} />
+                )}
+                {activeTab === "menu" && <MenuItemManagement />}
+                {activeTab === "categories" && <CategoryManagement />}
+            </div>
+          </main>
         </div>
       </div>
     </div>

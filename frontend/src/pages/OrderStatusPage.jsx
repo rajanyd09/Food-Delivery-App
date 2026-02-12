@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { orderService } from "../services/api";
 import socketService from "../services/socket";
 import OrderStatus from "../components/OrderStatus";
-import { FaSpinner, FaExclamationTriangle } from "react-icons/fa";
+import { FaSpinner, FaExclamationTriangle, FaArrowLeft, FaPhone, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 const OrderStatusPage = () => {
   const { orderId } = useParams();
+  const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,7 +41,6 @@ const OrderStatusPage = () => {
   const connectWebSocket = () => {
     socketService.connect();
     
-    // Join the specific order room immediately
     if (orderId) {
       socketService.joinOrderRoom(orderId);
     }
@@ -51,17 +51,14 @@ const OrderStatusPage = () => {
        }
     });
     
-    // Listen for order updates
     socketService.socket.on('orderStatusUpdated', (data) => {
       if (data.orderId === orderId || data._id === orderId) {
-        // Update the order with the new status
         setOrder(prevOrder => ({
           ...prevOrder, 
           status: data.status,
-          ...data.updatedOrder // Merge any other updated fields
+          ...data.updatedOrder
         }));
-        
-        toast.success(`Order status updated to: ${data.status}`);
+        toast.success(`Order status updated: ${data.status}`);
       }
     });
   };
@@ -70,10 +67,10 @@ const OrderStatusPage = () => {
     if (window.confirm("Are you sure you want to cancel this order?")) {
       try {
         await orderService.cancelOrder(orderId);
-        toast.success("Order cancelled successfully");
-        fetchOrder(); // Refresh order data
+        toast.success("Order cancelled");
+        fetchOrder();
       } catch (error) {
-        toast.error(error.response?.data?.error || "Failed to cancel order");
+        toast.error(error.response?.data?.error || "Failed to cancel");
       }
     }
   };
@@ -81,207 +78,163 @@ const OrderStatusPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-blue-500 mx-auto mb-4" />
-          <p className="text-gray-600">Loading order details...</p>
-        </div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
       </div>
     );
   }
 
   if (error || !order) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <FaExclamationTriangle className="text-4xl text-red-500 mx-auto mb-4" />
-          <p className="text-gray-600">{error || "Order not found"}</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center bg-white p-8 rounded-xl shadow-sm border border-gray-100 max-w-sm w-full">
+          <FaExclamationTriangle className="text-3xl text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Order Not Found</h3>
+          <p className="text-sm text-gray-500 mb-6">{error || "The requested order could not be found."}</p>
           <button
-            onClick={() => window.history.back()}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            onClick={() => navigate('/')}
+            className="w-full bg-gray-900 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
           >
-            Go Back
+            Go Home
           </button>
         </div>
       </div>
     );
   }
 
-  const canCancel =
-    order.status === "Order Received" || order.status === "Preparing";
+  const canCancel = order.status === "Order Received" || order.status === "Preparing";
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Order Status</h1>
-              <p className="text-gray-600">Order #{order._id.slice(-8)}</p>
+    <div className=" bg-gray-50/50 py-2 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-4">
+                 <button 
+                    onClick={() => navigate('/')}
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 hover:text-gray-900 hover:border-gray-300 transition-all shadow-sm"
+                >
+                    <FaArrowLeft className="text-sm" />
+                </button>
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Order Updates</h1>
+                    <p className="text-sm text-gray-500">Order ID: <span className="font-mono text-gray-700">#{order._id.slice(-6).toUpperCase()}</span></p>
+                </div>
             </div>
+
             {canCancel && (
               <button
                 onClick={handleCancelOrder}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                className="px-4 py-2 bg-white border border-red-200 text-red-600 text-sm font-semibold rounded-lg hover:bg-red-50 transition-colors"
               >
                 Cancel Order
               </button>
             )}
-          </div>
         </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <OrderStatus orderId={order._id} currentStatus={order.status} />
+            {/* Left Column: Status & Details */}
+            <div className="lg:col-span-2 space-y-6">
+                <OrderStatus orderId={order._id} currentStatus={order.status} />
 
-            <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">
-                Order Details
-              </h2>
+                {/* Delivery Information */}
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 className="text-base font-bold text-gray-900 mb-4 border-b border-gray-50 pb-2">
+                        Delivery Details
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                            <div className="flex items-start gap-3">
+                                <div className="mt-1 w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                    <FaMapMarkerAlt className="text-xs" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-0.5">Address</p>
+                                    <p className="text-sm text-gray-900">{order.customer.address}</p>
+                                    {order.deliveryInstructions && (
+                                        <p className="text-xs text-amber-600 mt-1 bg-amber-50 p-1.5 rounded border border-amber-100 italic">
+                                            " {order.deliveryInstructions} "
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="font-semibold text-gray-700 mb-2">
-                    Customer Information
-                  </h3>
-                  <div className="space-y-2">
-                    <p>
-                      <span className="font-medium">Name:</span>{" "}
-                      {order.customer.name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Email:</span>{" "}
-                      {order.customer.email}
-                    </p>
-                    <p>
-                      <span className="font-medium">Phone:</span>{" "}
-                      {order.customer.phone}
-                    </p>
-                    <p>
-                      <span className="font-medium">Address:</span>{" "}
-                      {order.customer.address}
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-gray-700 mb-2">
-                    Order Summary
-                  </h3>
-                  <div className="space-y-2">
-                    <p>
-                      <span className="font-medium">Order Date:</span>{" "}
-                      {new Date(order.orderDate).toLocaleString()}
-                    </p>
-                    <p>
-                      <span className="font-medium">Payment Method:</span>{" "}
-                      {order.paymentMethod}
-                    </p>
-                    <p>
-                      <span className="font-medium">Payment Status:</span>{" "}
-                      {order.paymentStatus}
-                    </p>
-                    {order.estimatedDeliveryTime && (
-                      <p>
-                        <span className="font-medium">Estimated Delivery:</span>{" "}
-                        {new Date(
-                          order.estimatedDeliveryTime,
-                        ).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {order.deliveryInstructions && (
-                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
-                  <h4 className="font-semibold text-yellow-800">
-                    Delivery Instructions
-                  </h4>
-                  <p className="text-yellow-700">
-                    {order.deliveryInstructions}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">
-                Order Items
-              </h2>
-
-              <div className="space-y-4">
-                {order.items.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start space-x-3 pb-4 border-b"
-                  >
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-800">
-                        {item.menuItem?.name || "Item"}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        Qty: {item.quantity}
-                      </p>
-                      {item.specialInstructions && (
-                        <p className="text-sm text-gray-500">
-                          Note: {item.specialInstructions}
-                        </p>
-                      )}
+                        <div className="space-y-4">
+                            <div className="flex items-start gap-3">
+                                 <div className="mt-1 w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 flex-shrink-0">
+                                    <FaEnvelope className="text-xs" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-0.5">Contact</p>
+                                    <p className="text-sm text-gray-900 font-medium">{order.customer.name}</p>
+                                    <p className="text-sm text-gray-600">{order.customer.phone}</p>
+                                    <p className="text-xs text-gray-400">{order.customer.email}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-800">
-                        ₹{(item.price * item.quantity).toFixed(2)}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        ₹{item.price.toFixed(2)} each
-                      </p>
-                    </div>
-                  </div>
-                ))}
-
-                <div className="pt-4 border-t">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-700">Subtotal</span>
-                    <span className="font-medium">
-                      ₹{order.subtotal?.toFixed(2) || '0.00'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-700">Delivery Fee</span>
-                    <span className="font-medium">
-                      ₹{order.deliveryFee?.toFixed(2) || '0.00'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center text-lg font-bold">
-                    <span className="text-gray-900">Total</span>
-                    <span className="text-green-600">
-                      ₹{order.totalAmount?.toFixed(2) || '0.00'}
-                    </span>
-                  </div>
                 </div>
-              </div>
-
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-blue-800 mb-2">Need Help?</h3>
-                <p className="text-blue-600 text-sm">
-                  If you have any questions about your order, please contact our
-                  customer support.
-                </p>
-                <button className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium">
-                  Contact Support →
-                </button>
-              </div>
             </div>
-          </div>
+
+            {/* Right Column: Order Summary */}
+            <div className="lg:col-span-1">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
+                    <h3 className="text-base font-bold text-gray-900 p-5 border-b border-gray-50 bg-gray-50/50">
+                        Order Summary
+                    </h3>
+                    
+                    <div className="p-5 max-h-[50vh] overflow-y-auto space-y-4">
+                        {order.items.map((item, index) => (
+                            <div key={index} className="flex gap-3 items-start">
+                                <div className="w-10 h-10 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400 font-bold text-xs flex-shrink-0 overflow-hidden">
+                                     {/* Fallback if no image available, or could fetch menu details */}
+                                     {item.menuItem?.image ? (
+                                         <img src={item.menuItem.image} alt="" className="w-full h-full object-cover"/>
+                                     ) : (
+                                         <span>x{item.quantity}</span>
+                                     )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex justify-between items-start">
+                                        <p className="text-sm font-semibold text-gray-900 truncate pr-2">
+                                            {item.menuItem?.name || "Unknown Item"}
+                                        </p>
+                                        <p className="text-sm font-bold text-gray-900">
+                                            ₹{(item.price * item.quantity).toFixed(2)}
+                                        </p>
+                                    </div>
+                                    <p className="text-xs text-gray-500">
+                                        Single: ₹{item.price.toFixed(2)}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="p-5 bg-gray-50 border-t border-gray-100 space-y-2">
+                         <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Subtotal</span>
+                            <span className="font-medium text-gray-900">₹{order.subtotal?.toFixed(2)}</span>
+                        </div>
+                         <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Delivery</span>
+                            <span className="font-medium text-gray-900">₹{order.deliveryFee?.toFixed(2)}</span>
+                        </div>
+                         <div className="pt-3 mt-1 border-t border-gray-200 flex justify-between items-center">
+                            <span className="text-base font-bold text-gray-900">Total Paid</span>
+                            <span className="text-xl font-bold text-green-600">₹{order.totalAmount?.toFixed(2)}</span>
+                        </div>
+                         <div className="mt-3 text-center">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                {order.paymentMethod} • {order.paymentStatus}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

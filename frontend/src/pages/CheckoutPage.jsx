@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { orderService } from "../services/api";
-import { authService } from "../services/api";
+import { orderService, authService } from "../services/api";
 import toast from "react-hot-toast";
 import {
   FaCreditCard,
@@ -11,7 +10,9 @@ import {
   FaUser,
   FaLock,
   FaExclamationTriangle,
-  FaEnvelope
+  FaEnvelope,
+  FaArrowLeft,
+  FaCheckCircle
 } from "react-icons/fa";
 
 const CheckoutPage = () => {
@@ -214,60 +215,28 @@ const CheckoutPage = () => {
   if (isValidating) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading checkout...</p>
-        </div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
       </div>
     );
   }
 
   if (validCartItems.length === 0 && !isValidating) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto">
-          <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-12 h-12 text-yellow-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center bg-white p-8 rounded-2xl shadow-sm border border-gray-100 max-w-sm w-full">
+            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FaExclamationTriangle className="text-xl text-gray-400" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Cart is empty</h3>
+            <p className="text-sm text-gray-500 mb-6">
+                Your cart is currently empty or contains invalid items.
+            </p>
+            <button
+                onClick={() => navigate("/")}
+                className="w-full bg-gray-900 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            {cart.length > 0 ? "Cart Items Invalid" : "Your cart is empty"}
-          </h1>
-          <p className="text-gray-600 mb-8">
-            {cart.length > 0
-              ? "Some items in your cart are no longer available. Please add new items."
-              : "Add some delicious food to your cart first!"}
-          </p>
-          <button
-            onClick={() => navigate("/")}
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-            Browse Menu
-          </button>
+                Start Ordering
+            </button>
         </div>
       </div>
     );
@@ -276,344 +245,242 @@ const CheckoutPage = () => {
   const invalidItemsCount = cart.length - validCartItems.length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      
+    <div className="min-h-screen bg-gray-50/50 py-2 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-8">
+            <button 
+                onClick={() => navigate(-1)}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 hover:text-gray-900 hover:border-gray-300 transition-all shadow-sm"
+            >
+                <FaArrowLeft className="text-sm" />
+            </button>
+            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Checkout</h1>
+        </div>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Warning for invalid items */}
         {invalidItemsCount > 0 && (
-          <div className="mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <FaExclamationTriangle className="h-5 w-5 text-yellow-400" />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-yellow-700">
-                  {invalidItemsCount} item(s) in your cart are no longer
-                  available and have been removed.
-                </p>
-              </div>
-            </div>
+          <div className="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
+             <FaExclamationTriangle className="text-amber-500 mt-0.5 flex-shrink-0" />
+             <p className="text-sm text-amber-800">
+               {invalidItemsCount} item(s) were removed because they are no longer available.
+             </p>
           </div>
         )}
 
-        {/* Wrap entire content in a form */}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
-        >
-          {/* Left Column - Delivery & Payment Info */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-6">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                  <FaMapMarkerAlt className="w-5 h-5 text-blue-600" />
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* LEFT COLUMN: User Info */}
+          <div className="lg:col-span-7 space-y-6">
+            
+            {/* Contact Details Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                    <FaUser className="text-xs" />
                 </div>
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Delivery Information
-                  </h2>
-                  <p className="text-gray-600">
-                    Where should we deliver your order?
-                  </p>
-                </div>
+                <h2 className="text-base font-bold text-gray-900">Contact Information</h2>
               </div>
 
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <div className="flex items-center">
-                        <FaUser className="w-4 h-4 text-gray-400 mr-2" />
-                        Full Name *
-                      </div>
-                    </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="group">
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">
+                    Full Name
+                  </label>
+                  <div className="relative">
                     <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className={`w-full px-4 py-3 border ${
-                        formErrors.name ? "border-red-300" : "border-gray-300"
-                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                      placeholder="John Doe"
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 border ${formErrors.name ? 'border-red-300' : 'border-gray-200'} rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none`}
+                        placeholder="Required"
                     />
-                    {formErrors.name && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {formErrors.name}
-                      </p>
-                    )}
+                    <FaUser className="absolute left-3.5 top-3 text-gray-400 text-xs" />
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <div className="flex items-center">
-                        <FaEnvelope className="w-4 h-4 text-gray-400 mr-2" />
-                        Email Address *
-                      </div>
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none"
-                      placeholder="john@example.com"
-                      readOnly
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <div className="flex items-center">
-                        <FaPhone className="w-4 h-4 text-gray-400 mr-2" />
-                        Phone Number *
-                      </div>
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className={`w-full px-4 py-3 border ${
-                        formErrors.phone ? "border-red-300" : "border-gray-300"
-                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                      placeholder="+1 (555) 123-4567"
-                    />
-                    {formErrors.phone && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {formErrors.phone}
-                      </p>
-                    )}
-                  </div>
+                  {formErrors.name && <p className="text-xs text-red-500 mt-1 ml-1">{formErrors.name}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <div className="flex items-center">
-                      <FaMapMarkerAlt className="w-4 h-4 text-gray-400 mr-2" />
-                      Delivery Address *
-                    </div>
+                   <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">
+                    Phone Number
                   </label>
-                  <textarea
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    required
-                    rows="3"
-                    className={`w-full px-4 py-3 border ${
-                      formErrors.address ? "border-red-300" : "border-gray-300"
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                    placeholder="123 Main Street, Apartment 4B, New York, NY 10001"
-                  />
-                  {formErrors.address && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {formErrors.address}
-                    </p>
-                  )}
+                  <div className="relative">
+                    <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        required
+                        className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 border ${formErrors.phone ? 'border-red-300' : 'border-gray-200'} rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none`}
+                        placeholder="Required"
+                    />
+                    <FaPhone className="absolute left-3.5 top-3 text-gray-400 text-xs" />
+                  </div>
+                   {formErrors.phone && <p className="text-xs text-red-500 mt-1 ml-1">{formErrors.phone}</p>}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Delivery Instructions (Optional)
-                  </label>
-                  <textarea
-                    name="deliveryInstructions"
-                    value={formData.deliveryInstructions}
-                    onChange={handleChange}
-                    rows="2"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="e.g., Leave at door, ring bell, call before delivery, etc."
-                  />
+                <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">
+                        Email Address
+                    </label>
+                    <div className="relative">
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            readOnly
+                            className="w-full pl-10 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-500 cursor-not-allowed"
+                        />
+                        <FaEnvelope className="absolute left-3.5 top-3 text-gray-400 text-xs" />
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Delivery Address Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
+                    <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+                        <FaMapMarkerAlt className="text-xs" />
+                    </div>
+                    <h2 className="text-base font-bold text-gray-900">Delivery Address</h2>
                 </div>
 
-                {/* Payment Method */}
-                <div className="pt-6 border-t">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                      <FaMoneyBillWave className="w-5 h-5 text-green-600" />
-                    </div>
+                <div className="space-y-5">
                     <div>
-                      <h2 className="text-xl font-bold text-gray-900">
-                        Payment Method
-                      </h2>
-                      <p className="text-gray-600">
-                        Cash on Delivery
-                      </p>
+                        <div className="relative">
+                            <textarea
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                required
+                                rows="3"
+                                className={`w-full pl-10 pr-4 py-3 bg-gray-50 border ${formErrors.address ? 'border-red-300' : 'border-gray-200'} rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none resize-none`}
+                                placeholder="Enter your full street address..."
+                            />
+                            <FaMapMarkerAlt className="absolute left-3.5 top-3.5 text-gray-400 text-xs" />
+                        </div>
+                         {formErrors.address && <p className="text-xs text-red-500 mt-1 ml-1">{formErrors.address}</p>}
                     </div>
-                  </div>
 
-                  <div className="p-4 border-2 border-green-200 bg-green-50 rounded-lg">
-                    <div className="flex items-center">
-                      <FaMoneyBillWave className="w-6 h-6 text-green-600 mr-3" />
-                      <div>
-                        <p className="font-medium text-green-900">Cash on Delivery</p>
-                        <p className="text-sm text-green-700">
-                          Pay when you receive your order
-                        </p>
-                      </div>
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 ml-1">
+                            Instructions (Optional)
+                        </label>
+                       <textarea
+                            name="deliveryInstructions"
+                            value={formData.deliveryInstructions}
+                            onChange={handleChange}
+                            rows="2"
+                             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all outline-none resize-none"
+                            placeholder="Gate code, leave at door, etc..."
+                        />
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
+
+            {/* Payment Method Card */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                 <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
+                    <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
+                        <FaMoneyBillWave className="text-xs" />
+                    </div>
+                    <h2 className="text-base font-bold text-gray-900">Payment</h2>
+                </div>
+
+                <div className="p-4 border border-emerald-200 bg-emerald-50/50 rounded-xl flex items-center justify-between cursor-pointer ring-1 ring-emerald-500 shadow-sm transition-all">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-emerald-100 shadow-sm">
+                            <FaMoneyBillWave className="text-emerald-600" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold text-gray-900">Cash on Delivery</p>
+                            <p className="text-xs text-gray-500">Pay directly to our delivery partner</p>
+                        </div>
+                    </div>
+                    <FaCheckCircle className="text-emerald-500 text-lg" />
+                </div>
+            </div>
+
           </div>
 
-          {/* Right Column - Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-md p-6 sticky top-8">
-              <h2 className="text-xl font-bold mb-6 text-gray-900">
-                Order Summary
-              </h2>
-
-              <div className="space-y-4 mb-6 max-h-80 overflow-y-auto pr-2">
-                {validCartItems.map((cartItem) => {
-                  const menuItem = getMenuItem(cartItem.menuItemId);
-                  if (!menuItem) return null;
-
-                  return (
-                    <div
-                      key={cartItem.menuItemId}
-                      className="flex items-start space-x-3 pb-4 border-b"
-                    >
-                      <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-                        {menuItem.image ? (
-                          <img
-                            src={menuItem.image}
-                            alt={menuItem.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.style.display = "none";
-                              e.target.parentElement.innerHTML = `
-                                <div class="w-full h-full flex items-center justify-center text-gray-400">
-                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                  </svg>
+          {/* RIGHT COLUMN: Order Summary (Sticky) */}
+          <div className="lg:col-span-5">
+            <div className="sticky top-6">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="p-5 border-b border-gray-100 bg-gray-50/30">
+                        <h2 className="text-base font-bold text-gray-900">Order Summary</h2>
+                    </div>
+                    
+                    {/* Item List */}
+                    <div className="p-5 max-h-[40vh] overflow-y-auto space-y-4">
+                        {validCartItems.map((cartItem) => {
+                            const menuItem = getMenuItem(cartItem.menuItemId);
+                            if (!menuItem) return null;
+                            return (
+                                <div key={cartItem.menuItemId} className="flex gap-3">
+                                    <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
+                                         {menuItem.image && <img src={menuItem.image} alt="" className="w-full h-full object-cover" />}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex justify-between items-start">
+                                            <p className="text-sm font-semibold text-gray-900 truncate pr-2">{menuItem.name}</p>
+                                            <p className="text-sm font-bold text-gray-900">₹{((menuItem.price || 0) * cartItem.quantity).toFixed(2)}</p>
+                                        </div>
+                                        <p className="text-xs text-gray-500">Qty: {cartItem.quantity} &times; ₹{menuItem.price?.toFixed(2)}</p>
+                                    </div>
                                 </div>
-                              `;
-                            }}
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400">
-                            <svg
-                              className="w-8 h-8"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                              />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 truncate">
-                          {menuItem.name || "Unknown Item"}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          Qty: {cartItem.quantity}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          ₹{(menuItem.price || 0).toFixed(2)} each
-                        </p>
-                      </div>
-                      <div className="font-semibold text-gray-900">
-                        ₹
-                        {((menuItem.price || 0) * cartItem.quantity).toFixed(2)}
-                      </div>
+                            )
+                        })}
                     </div>
-                  );
-                })}
-              </div>
 
-              <div className="space-y-3 pt-4 border-t">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
+                    {/* Totals */}
+                    <div className="p-5 bg-gray-50 border-t border-gray-100 space-y-3">
+                        <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Subtotal</span>
+                            <span className="font-medium text-gray-900">₹{subtotal.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Delivery Fee</span>
+                            <span className="font-medium text-gray-900">₹{deliveryFee.toFixed(2)}</span>
+                        </div>
+                        <div className="pt-3 mt-1 border-t border-gray-200 flex justify-between items-center">
+                            <span className="text-base font-bold text-gray-900">Total</span>
+                            <span className="text-xl font-bold text-gray-900">₹{total.toFixed(2)}</span>
+                        </div>
+
+                        <div className="pt-4">
+                             <button
+                                type="submit"
+                                disabled={loading || validCartItems.length === 0}
+                                className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3.5 rounded-xl text-sm font-bold shadow-lg shadow-gray-200 transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            >
+                                {loading ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                        <span>Processing...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <FaLock className="text-xs" />
+                                        <span>Place Order</span>
+                                    </>
+                                )}
+                            </button>
+                            <p className="text-center text-[10px] uppercase tracking-wider text-gray-400 mt-3 font-medium">
+                                Secure Encrypted Checkout
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Delivery Fee</span>
-                  <span className="font-medium">₹{deliveryFee.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-lg font-bold pt-3 border-t">
-                  <span>Total</span>
-                  <span className="text-green-600">₹{total.toFixed(2)}</span>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading || validCartItems.length === 0}
-                className="w-full mt-8 bg-green-600 text-white py-4 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-              >
-                {loading ? (
-                  <>
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Placing Order...
-                  </>
-                ) : (
-                  <>
-                    <FaLock className="w-5 h-5 mr-2" />
-                    Place Order • ₹{total.toFixed(2)}
-                  </>
-                )}
-              </button>
-
-              <p className="text-xs text-gray-500 mt-4 text-center">
-                By placing your order, you agree to our Terms of Service and
-                Privacy Policy
-              </p>
-
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-blue-800 mb-2 flex items-center">
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  Estimated Delivery
-                </h3>
-                <p className="text-blue-600">30-45 minutes</p>
-              </div>
             </div>
           </div>
+        
         </form>
-      </main>
+      </div>
     </div>
   );
 };

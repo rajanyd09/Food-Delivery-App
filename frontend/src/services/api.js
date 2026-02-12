@@ -145,6 +145,10 @@ export const menuService = {
     }
   },
 
+  getNewMenuItems: async () => {
+    return api.get("/menu/new");
+  },
+
   getMenuItem: (id) => api.get(`/menu/${id}`),
 
   createMenuItem: async (formData) => {
@@ -176,6 +180,29 @@ export const menuService = {
   },
 };
 
+
+
+// Category Service
+export const categoryService = {
+  getAllCategories: async () => {
+    const response = await api.get("/categories");
+    return response;
+  },
+
+  createCategory: async (formData) => {
+    const response = await api.post("/categories", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  },
+
+  deleteCategory: async (id) => {
+    const response = await api.delete(`/categories/${id}`);
+    return response;
+  },
+};
 
 // Order service
 export const orderService = {

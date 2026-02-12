@@ -10,6 +10,8 @@ import { Toaster } from "react-hot-toast";
 import { authService } from "./services/api";
 import Navigation from "./components/Navigation";
 import MenuPage from "./pages/MenuPage";
+import FullMenuPage from "./pages/FullMenuPage";
+import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderStatusPage from "./pages/OrderStatusPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
@@ -27,6 +29,32 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // 1. Configure widget
+    window.chatbotConfig = {
+      chatbotId: "698310530eed542a1b3a2e85", // Ensure this ID is correct!
+      apiUrl: "http://localhost:3000/api",
+      botName: "AI Assistant",
+      primaryColor: "#10b981",
+    };
+
+    // 2. Load the SINGLE script from your Backend
+    const script = document.createElement("script");
+    script.src = "http://localhost:3000/widget/embed.js"; // <--- Point to Provider Backend
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup
+      document.body.removeChild(script);
+      // Remove the widget UI if it exists to prevent duplicates on navigation
+      const widget = document.querySelector(".chatbot-widget");
+      if (widget) widget.remove();
+      const styles = document.getElementById("chatbot-widget-styles");
+      if (styles) styles.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const currentUser = authService.getCurrentUser();
@@ -88,6 +116,8 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<MenuPage />} />
+          <Route path="/menu" element={<FullMenuPage />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/order-status/:orderId" element={<OrderStatusPage />} />

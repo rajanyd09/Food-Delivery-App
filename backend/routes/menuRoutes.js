@@ -17,6 +17,7 @@ const handleMulterError = (err, req, res, next) => {
 };
 
 router.get("/", menuController.getAllMenuItems);
+router.get("/new", menuController.getNewMenuItems);
 router.get("/:id", menuController.getMenuItemById);
 router.post("/", adminAuth, upload.single("image"), handleMulterError, menuController.createMenuItem);
 router.put("/:id", adminAuth, upload.single("image"), handleMulterError, menuController.updateMenuItem);

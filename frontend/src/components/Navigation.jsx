@@ -53,7 +53,7 @@ const Navigation = ({ user }) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <Link
-              to="/"
+              to="/menu"
               className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-blue-50"
             >
               Menu
@@ -174,7 +174,7 @@ const Navigation = ({ user }) => {
           <div className="md:hidden py-4 border-t border-gray-100">
             <div className="flex flex-col space-y-2">
               <Link
-                to="/"
+                to="/menu"
                 className="px-4 py-2.5 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

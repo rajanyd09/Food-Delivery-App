@@ -4,10 +4,27 @@ const { cloudinary } = require("../config/cloudinary");
 // Get all menu items
 exports.getAllMenuItems = async (req, res) => {
   try {
-    const menuItems = await MenuItem.find({});
+    const { category } = req.query;
+    let query = {};
+    if (category) {
+      query.category = category;
+    }
+    const menuItems = await MenuItem.find(query);
     res.json(menuItems);
   } catch (error) {
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+// Get new menu items (limit 5)
+exports.getNewMenuItems = async (req, res) => {
+  try {
+    const newItems = await MenuItem.find({})
+      .sort({ createdAt: -1 })
+      .limit(5);
+    res.json(newItems);
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
   }
 };
 

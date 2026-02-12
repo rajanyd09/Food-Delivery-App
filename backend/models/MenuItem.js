@@ -25,7 +25,6 @@ const menuItemSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["pizza", "burger", "pasta", "drinks", "dessert"],
       required: true,
     },
     available: {

@@ -50,6 +50,7 @@ app.use("/api/menu", menuRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/categories", require("./routes/categoryRoutes"));
 
 // Test route
 app.get("/api/health", (req, res) => {
