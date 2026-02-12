@@ -31,32 +31,6 @@ const Layout = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // 1. Configure widget
-    window.chatbotConfig = {
-      chatbotId: "698310530eed542a1b3a2e85", // Ensure this ID is correct!
-      apiUrl: "http://localhost:3000/api",
-      botName: "AI Assistant",
-      primaryColor: "#10b981",
-    };
-
-    // 2. Load the SINGLE script from your Backend
-    const script = document.createElement("script");
-    script.src = "http://localhost:3000/widget/embed.js"; // <--- Point to Provider Backend
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      // Cleanup
-      document.body.removeChild(script);
-      // Remove the widget UI if it exists to prevent duplicates on navigation
-      const widget = document.querySelector(".chatbot-widget");
-      if (widget) widget.remove();
-      const styles = document.getElementById("chatbot-widget-styles");
-      if (styles) styles.remove();
-    };
-  }, []);
-
-  useEffect(() => {
     const currentUser = authService.getCurrentUser();
     setUser(currentUser);
     // Check if user is admin
