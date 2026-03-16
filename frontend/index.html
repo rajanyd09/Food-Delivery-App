@@ -9,7 +9,20 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-
-
+    <!-- Chatbot Widget -->
+    <script>
+      window.chatbotConfig = {
+        chatbotId: "698306f4d89361d89ac713a1",
+        apiUrl: "https://chatbot-provider.onrender.com/api",
+        botName: "AI Support",
+        primaryColor: "#10b981",
+        welcomeMessage: "Hi! How can I help you today?",
+        placeholder: "Type your message...",
+        position: "bottom-right",
+        showBranding: true,
+        autoOpen: false,
+      };
+    </script>
+    <script src="https://chatbot-provider.onrender.com/widget/embed.js"></script>
   </body>
 </html>
